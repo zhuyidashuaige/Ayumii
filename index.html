@@ -1,0 +1,614 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="pageTitle">❤ Ruang belajar eksklusif Ayumiiisaa ❤</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <header class="header">
+            <div class="back-button hidden" id="backButton" onclick="goBack()">
+                <span>← 返回主目录</span>
+            </div>
+            <h1 class="title" id="mainTitle">❤ Ruang belajar eksklusif Ayumiiisaa ❤</h1>
+            <p class="subtitle" id="mainSubtitle">0,99³⁶⁵ = 0,03 &nbsp;&nbsp;&nbsp;
+1,01³⁶⁵ = 37,8&nbsp;&nbsp;&nbsp;
+Lakukan sedikit kemajuan setiap hari dan Anda akan menjadi pegawai negeri sipil.</p>
+        </header>
+        
+        <main class="main-content" id="mainContent">
+            <!-- 主页科目选择 -->
+            <div class="subject-grid" id="subjectGrid">
+                <div class="subject-card" onclick="goToSubject('Teori Bilangan', '数论')">
+                    <div class="subject-icon">🔢</div>
+                    <h3>Teori Bilangan</h3>
+                    <p>数论</p>
+                </div>
+                <div class="subject-card" onclick="goToSubject('Operasi Bilangan Pecahan', '分数运算')">
+                    <div class="subject-icon">➗</div>
+                    <h3>Operasi Bilangan Pecahan</h3>
+                    <p>分数运算</p>
+                </div>
+                <div class="subject-card" onclick="goToSubject('Persentase', '百分比')">
+                    <div class="subject-icon">📊</div>
+                    <h3>Persentase</h3>
+                    <p>百分比</p>
+                </div>
+                <div class="subject-card" onclick="goToSubject('Perbandingan', '比与比例')">
+                    <div class="subject-icon">⚖️</div>
+                    <h3>Perbandingan</h3>
+                    <p>比与比例</p>
+                </div>
+                <div class="subject-card" onclick="goToSubject('Waktu, Jarak dan Kecepatan', '时间、距离、速度')">
+                    <div class="subject-icon">🚀</div>
+                    <h3>Waktu, Jarak dan Kecepatan</h3>
+                    <p>时间、距离、速度</p>
+                </div>
+                <div class="subject-card" onclick="goToSubject('Waktu, Jarak dan Kecepatan 2', '时间、距离、速度 2')">
+                    <div class="subject-icon">🏃</div>
+                    <h3>Waktu, Jarak dan Kecepatan 2</h3>
+                    <p>时间、距离、速度 2</p>
+                </div>
+                <div class="subject-card" onclick="goToSubject('Aritmetika Sosial', '社会算术（折扣、利润等）')">
+                    <div class="subject-icon">💰</div>
+                    <h3>Aritmetika Sosial</h3>
+                    <p>社会算术（折扣、利润等）</p>
+                </div>
+                <div class="subject-card" onclick="goToSubject('Tabel dan Diagram', '表格与图表')">
+                    <div class="subject-icon">📈</div>
+                    <h3>Tabel dan Diagram</h3>
+                    <p>表格与图表</p>
+                </div>
+                <div class="subject-card" onclick="goToSubject('Mean, Median, Modus dan Range', '平均数、中位数、众数、极差')">
+                    <div class="subject-icon">📊</div>
+                    <h3>Mean, Median, Modus dan Range</h3>
+                    <p>平均数、中位数、众数、极差</p>
+                </div>
+                <div class="subject-card" onclick="goToSubject('Sinonim/Persamaan Kata', '近义词')">
+                    <div class="subject-icon">📝</div>
+                    <h3>Sinonim/Persamaan Kata</h3>
+                    <p>近义词</p>
+                </div>
+                <div class="subject-card" onclick="goToSubject('Sinonim 2', '近义词 2')">
+                    <div class="subject-icon">✍️</div>
+                    <h3>Sinonim 2</h3>
+                    <p>近义词 2</p>
+                </div>
+                <div class="subject-card" onclick="goToSubject('Kumpulan Sinonim Kata', '近义词汇总')">
+                    <div class="subject-icon">📚</div>
+                    <h3>Kumpulan Sinonim Kata</h3>
+                    <p>近义词汇总</p>
+                </div>
+                <div class="subject-card" onclick="goToSubject('Antonim/Lawan Kata', '反义词')">
+                    <div class="subject-icon">🔄</div>
+                    <h3>Antonim/Lawan Kata</h3>
+                    <p>反义词</p>
+                </div>
+                <div class="subject-card" onclick="goToSubject('Antonim 2', '反义词 2')">
+                    <div class="subject-icon">🔃</div>
+                    <h3>Antonim 2</h3>
+                    <p>反义词 2</p>
+                </div>
+                <div class="subject-card" onclick="goToSubject('Kumpulan Antonim Kata', '反义词汇总')">
+                    <div class="subject-icon">📖</div>
+                    <h3>Kumpulan Antonim Kata</h3>
+                    <p>反义词汇总</p>
+                </div>
+                <div class="subject-card" onclick="goToSubject('Analogi/Relasi Makna', '语义类比')">
+                    <div class="subject-icon">🧩</div>
+                    <h3>Analogi/Relasi Makna</h3>
+                    <p>语义类比</p>
+                </div>
+                <div class="subject-card" onclick="goToSubject('Analogi Kata 2', '语义类比 2')">
+                    <div class="subject-icon">🎯</div>
+                    <h3>Analogi Kata 2</h3>
+                    <p>语义类比 2</p>
+                </div>
+                <div class="subject-card" onclick="goToSubject('Pengelompokan Kata', '词语归类')">
+                    <div class="subject-icon">🗂️</div>
+                    <h3>Pengelompokan Kata</h3>
+                    <p>词语归类</p>
+                </div>
+                <div class="subject-card" onclick="goToSubject('Pemahaman Bacaan', '阅读理解')">
+                    <div class="subject-icon">📖</div>
+                    <h3>Pemahaman Bacaan</h3>
+                    <p>阅读理解</p>
+                </div>
+                <div class="subject-card" onclick="goToSubject('Aljabar, Pangkat dan Akar', '代数、幂与根')">
+                    <div class="subject-icon">🔢</div>
+                    <h3>Aljabar, Pangkat dan Akar</h3>
+                    <p>代数、幂与根</p>
+                </div>
+                <div class="subject-card" onclick="goToSubject('Persamaan Linear Satu Variabel dan Aplikasinya', '一元一次方程及其应用')">
+                    <div class="subject-icon">📐</div>
+                    <h3>Persamaan Linear Satu Variabel dan Aplikasinya</h3>
+                    <p>一元一次方程及其应用</p>
+                </div>
+                <div class="subject-card" onclick="goToSubject('Persamaan Linier Dua Variabel dan Aplikasinya', '二元一次方程及其应用')">
+                    <div class="subject-icon">📏</div>
+                    <h3>Persamaan Linier Dua Variabel dan Aplikasinya</h3>
+                    <p>二元一次方程及其应用</p>
+                </div>
+                <div class="subject-card" onclick="goToSubject('Persamaan Linear Tiga Variabel dan Aplikasinya', '三元一次方程及其应用')">
+                    <div class="subject-icon">📊</div>
+                    <h3>Persamaan Linear Tiga Variabel dan Aplikasinya</h3>
+                    <p>三元一次方程及其应用</p>
+                </div>
+                <div class="subject-card" onclick="goToSubject('Persamaan Kuadrat', '二次方程')">
+                    <div class="subject-icon">🔺</div>
+                    <h3>Persamaan Kuadrat</h3>
+                    <p>二次方程</p>
+                </div>
+                <div class="subject-card" onclick="goToSubject('Aritmetika dan Geometri', '算术与几何')">
+                    <div class="subject-icon">📐</div>
+                    <h3>Aritmetika dan Geometri</h3>
+                    <p>算术与几何</p>
+                </div>
+                <div class="subject-card" onclick="goToSubject('Bangun Datar', '平面几何')">
+                    <div class="subject-icon">🔷</div>
+                    <h3>Bangun Datar</h3>
+                    <p>平面几何</p>
+                </div>
+                <div class="subject-card" onclick="goToSubject('Bangun Ruang', '立体几何')">
+                    <div class="subject-icon">🧊</div>
+                    <h3>Bangun Ruang</h3>
+                    <p>立体几何</p>
+                </div>
+                <div class="subject-card" onclick="goToSubject('Eksponen Lanjutan dan Persamaannya', '指数进阶及其方程')">
+                    <div class="subject-icon">⚡</div>
+                    <h3>Eksponen Lanjutan dan Persamaannya</h3>
+                    <p>指数进阶及其方程</p>
+                </div>
+                <div class="subject-card" onclick="goToSubject('Himpunan', '集合')">
+                    <div class="subject-icon">🎯</div>
+                    <h3>Himpunan</h3>
+                    <p>集合</p>
+                </div>
+                <div class="subject-card" onclick="goToSubject('Teori Peluang, Permutasi dan Kombinasi', '概率、排列与组合')">
+                    <div class="subject-icon">🎲</div>
+                    <h3>Teori Peluang, Permutasi dan Kombinasi</h3>
+                    <p>概率、排列与组合</p>
+                </div>
+                <div class="subject-card" onclick="goToSubject('Deret Angka dan Huruf', '数字与字母数列')">
+                    <div class="subject-icon">🔢</div>
+                    <h3>Deret Angka dan Huruf</h3>
+                    <p>数字与字母数列</p>
+                </div>
+                <div class="subject-card" onclick="goToSubject('Deret Gambar', '图形数列')">
+                    <div class="subject-icon">🖼️</div>
+                    <h3>Deret Gambar</h3>
+                    <p>图形数列</p>
+                </div>
+                <div class="subject-card" onclick="goToSubject('Sudut, Garis dan Kesebangunan', '角、直线与相似（形）')">
+                    <div class="subject-icon">📐</div>
+                    <h3>Sudut, Garis dan Kesebangunan</h3>
+                    <p>角、直线与相似（形）</p>
+                </div>
+                <div class="subject-card" onclick="goToSubject('exam', '考试')">
+                    <div class="subject-icon">📝</div>
+                    <h3>Exam</h3>
+                    <p>考试</p>
+                </div>
+            </div>
+            
+            <!-- 子目录选择 -->
+            <div class="menu-section hidden" id="subMenu">
+                <div class="sub-menu-grid">
+                    <div class="sub-menu-card" onclick="showContent('基础知识')">
+                        <div class="sub-icon">📚</div>
+                        <h3>Dasar-dasar</h3>
+                    </div>
+                    <div class="sub-menu-card" onclick="showContent('课堂作业')">
+                        <div class="sub-icon">✏️</div>
+                        <h3>Pekerjaan Kelas</h3>
+                    </div>
+                    <div class="sub-menu-card" onclick="showContent('课后作业')">
+                        <div class="sub-icon">📝</div>
+                        <h3>Pekerjaan rumah</h3>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 内容展示区 -->
+            <div class="content-section hidden" id="contentSection">
+                <div class="back-button" onclick="showSubMenu()">
+                    <span>← kembali</span>
+                </div>
+                <h2 class="content-title" id="contentTitle"></h2>
+                <div class="image-gallery" id="imageGallery">
+                    <!-- 图片将在这里动态加载 -->
+                </div>
+            </div>
+        </main>
+    </div>
+    
+    <script>
+        let currentSubject = '';
+        let currentChineseName = '';
+        let currentCategory = '';
+        
+        // 页面初始化
+        document.addEventListener('DOMContentLoaded', () => {
+            // 添加动画效果
+            const cards = document.querySelectorAll('.subject-card');
+            cards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.05}s`;
+                card.classList.add('fade-in-up');
+            });
+            
+            // 添加触摸支持
+            if ('ontouchstart' in window) {
+                document.body.classList.add('touch-device');
+            }
+        });
+        
+        // 跳转到科目页面（现在改为显示子菜单）
+        function goToSubject(subjectName, chineseName) {
+            currentSubject = subjectName;
+            currentChineseName = chineseName;
+            
+            // 隐藏主页面，显示子菜单
+            document.getElementById('subjectGrid').classList.add('hidden');
+            document.getElementById('subMenu').classList.remove('hidden');
+            document.getElementById('backButton').classList.remove('hidden');
+            
+            // 更新页面标题
+            document.getElementById('pageTitle').textContent = `${subjectName} - 甜蜜学习之旅`;
+            document.getElementById('mainTitle').textContent = `📚 ${subjectName}`;
+            document.getElementById('mainSubtitle').textContent = chineseName;
+            
+            // 添加动画效果
+            const subCards = document.querySelectorAll('.sub-menu-card');
+            subCards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.classList.add('fade-in-up');
+            });
+        }
+        
+        // 返回主目录
+        function goBack() {
+            document.getElementById('subjectGrid').classList.remove('hidden');
+            document.getElementById('subMenu').classList.add('hidden');
+            document.getElementById('contentSection').classList.add('hidden');
+            document.getElementById('backButton').classList.add('hidden');
+            
+            // 恢复原始标题
+            document.getElementById('pageTitle').textContent = '❤ Ruang belajar eksklusif Ayumiiisaa ❤';
+            document.getElementById('mainTitle').textContent = '❤ Ruang belajar eksklusif Ayumiiisaa ❤';
+            document.getElementById('mainSubtitle').textContent = '0,99³⁶⁵ = 0,03     1,01³⁶⁵ = 37,8     Lakukan sedikit kemajuan setiap hari dan Anda akan menjadi pegawai negeri sipil.';
+        }
+        
+        // 返回子菜单
+        function showSubMenu() {
+            document.getElementById('subMenu').classList.remove('hidden');
+            document.getElementById('contentSection').classList.add('hidden');
+        }
+        
+        // 显示内容
+        function showContent(category) {
+            currentCategory = category;
+            document.getElementById('subMenu').classList.add('hidden');
+            document.getElementById('contentSection').classList.remove('hidden');
+            document.getElementById('contentTitle').textContent = `${currentSubject} - ${category}`;
+            
+            loadImages();
+        }
+        
+        // 加载图片
+        function loadImages() {
+            const gallery = document.getElementById('imageGallery');
+            gallery.innerHTML = '<div class="loading">正在加载图片...</div>';
+            
+            // 构建图片路径
+            const basePath = `资料/${currentSubject}/${currentCategory}`;
+            
+            // 常见的图片扩展名
+            const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
+            const imagePromises = [];
+            
+            // 尝试加载多个可能的图片文件
+            for (let i = 1; i <= 20; i++) {
+                for (const ext of imageExtensions) {
+                    const imagePath = `${basePath}/${i}.${ext}`;
+                    imagePromises.push(checkImageExists(imagePath));
+                    
+                    // 也尝试一些常见的命名模式
+                    const altPaths = [
+                        `${basePath}/image${i}.${ext}`,
+                        `${basePath}/img${i}.${ext}`,
+                        `${basePath}/pic${i}.${ext}`,
+                        `${basePath}/${String(i).padStart(2, '0')}.${ext}`
+                    ];
+                    
+                    altPaths.forEach(path => {
+                        imagePromises.push(checkImageExists(path));
+                    });
+                }
+            }
+            
+            Promise.allSettled(imagePromises).then(results => {
+                const validImages = results
+                    .filter(result => result.status === 'fulfilled' && result.value)
+                    .map(result => result.value)
+                    .filter((path, index, self) => self.indexOf(path) === index); // 去重
+                
+                displayImages(validImages);
+            });
+        }
+        
+        // 检查图片是否存在
+        function checkImageExists(imagePath) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => resolve(imagePath);
+                img.onerror = () => resolve(null);
+                img.src = imagePath;
+            });
+        }
+        
+        // 获取文件大小
+        function getImageSize(imagePath) {
+            return new Promise((resolve) => {
+                const img = new Image();
+                img.onload = () => {
+                    // 尝试获取文件大小（这在浏览器中有限制）
+                    resolve({
+                        width: img.naturalWidth,
+                        height: img.naturalHeight,
+                        size: '未知大小' // 浏览器安全限制，无法直接获取文件大小
+                    });
+                };
+                img.onerror = () => resolve({ width: 0, height: 0, size: '未知大小' });
+                img.src = imagePath;
+            });
+        }
+        
+        // 显示图片
+        function displayImages(imagePaths) {
+            const gallery = document.getElementById('imageGallery');
+            
+            if (imagePaths.length === 0) {
+                gallery.innerHTML = `
+                    <div class="error-message">
+                        <h3>😔 暂无图片</h3>
+                        <p>该目录下暂时没有找到图片文件</p>
+                        <p>请检查路径：资料/${currentSubject}/${currentCategory}/</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            gallery.innerHTML = '';
+            
+            imagePaths.forEach((imagePath, index) => {
+                const imageItem = document.createElement('div');
+                imageItem.className = 'image-item';
+                imageItem.style.animationDelay = `${index * 0.1}s`;
+                
+                // 获取文件名
+                const fileName = imagePath.split('/').pop();
+                
+                imageItem.innerHTML = `
+                    <div class="image-container">
+                        <img src="${imagePath}" alt="${currentSubject} - ${currentCategory} - ${fileName}" loading="lazy">
+                        <div class="image-overlay">
+                            <button class="overlay-button" onclick="openImageModal('${imagePath}', '${fileName}')" title="查看大图">
+                                👁️
+                            </button>
+                            <button class="overlay-button" onclick="downloadImage('${imagePath}', '${fileName}')" title="下载图片">
+                                📥
+                            </button>
+                        </div>
+                    </div>
+                    <div class="image-info">
+                        <div class="image-title">${fileName}</div>
+                        <div class="image-size" id="size-${index}">加载中...</div>
+                    </div>
+                `;
+                
+                gallery.appendChild(imageItem);
+                
+                // 异步获取图片尺寸信息
+                getImageSize(imagePath).then(info => {
+                    const sizeElement = document.getElementById(`size-${index}`);
+                    if (sizeElement) {
+                        sizeElement.textContent = `${info.width} × ${info.height}px`;
+                    }
+                });
+            });
+        }
+        
+        // 下载图片
+        function downloadImage(imagePath, fileName) {
+            // 创建一个临时的a标签来触发下载
+            const link = document.createElement('a');
+            link.href = imagePath;
+            link.download = fileName;
+            link.style.display = 'none';
+            
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            
+            // 显示下载提示
+            showToast(`正在下载: ${fileName}`, 'success');
+        }
+        
+        // 图片模态框功能（增强版）
+        function openImageModal(imagePath, fileName) {
+            const modal = document.createElement('div');
+            modal.className = 'image-modal';
+            
+            // 获取图片信息
+            getImageSize(imagePath).then(info => {
+                modal.innerHTML = `
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <div class="modal-title">${fileName}</div>
+                            <div class="modal-actions">
+                                <button class="modal-button" onclick="downloadImage('${imagePath}', '${fileName}')">
+                                    📥 下载
+                                </button>
+                                <button class="close-modal" onclick="closeImageModal()">&times;</button>
+                            </div>
+                        </div>
+                        <img src="${imagePath}" alt="${fileName}" class="modal-image">
+                        <div class="modal-info">
+                            <h3>${currentSubject} - ${currentCategory}</h3>
+                            <p>文件名: ${fileName}</p>
+                            <p>尺寸: ${info.width} × ${info.height} 像素</p>
+                            <p>大小: ${info.size}</p>
+                        </div>
+                    </div>
+                `;
+            });
+            
+            document.body.appendChild(modal);
+            
+            // 点击背景关闭模态框
+            modal.onclick = (e) => {
+                if (e.target === modal) {
+                    closeImageModal();
+                }
+            };
+            
+            // 阻止模态框内容区域的点击事件冒泡
+            modal.querySelector('.modal-content').onclick = (e) => {
+                e.stopPropagation();
+            };
+        }
+        
+        // 关闭图片模态框
+        function closeImageModal() {
+            const modal = document.querySelector('.image-modal');
+            if (modal) {
+                modal.style.animation = 'fadeOut 0.3s ease';
+                setTimeout(() => {
+                    modal.remove();
+                }, 300);
+            }
+        }
+        
+        // 显示提示消息
+        function showToast(message, type = 'info') {
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            
+            // 添加toast样式
+            const style = document.createElement('style');
+            style.textContent = `
+                .toast {
+                    position: fixed;
+                    top: 20px;
+                    right: 20px;
+                    padding: 12px 20px;
+                    border-radius: 25px;
+                    color: white;
+                    font-weight: 600;
+                    z-index: 2000;
+                    animation: slideInRight 0.3s ease, fadeOut 0.3s ease 2.7s;
+                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+                }
+                
+                .toast-success {
+                    background: linear-gradient(145deg, #28a745, #20c997);
+                }
+                
+                .toast-info {
+                    background: linear-gradient(145deg, #17a2b8, #6f42c1);
+                }
+                
+                .toast-error {
+                    background: linear-gradient(145deg, #dc3545, #e83e8c);
+                }
+                
+                @keyframes slideInRight {
+                    from {
+                        transform: translateX(100%);
+                        opacity: 0;
+                    }
+                    to {
+                        transform: translateX(0);
+                        opacity: 1;
+                    }
+                }
+                
+                @keyframes fadeOut {
+                    from {
+                        opacity: 1;
+                    }
+                    to {
+                        opacity: 0;
+                    }
+                }
+            `;
+            
+            if (!document.querySelector('style[data-toast]')) {
+                style.setAttribute('data-toast', 'true');
+                document.head.appendChild(style);
+            }
+            
+            document.body.appendChild(toast);
+            
+            // 3秒后自动移除
+            setTimeout(() => {
+                if (toast.parentNode) {
+                    toast.remove();
+                }
+            }, 3000);
+        }
+        
+        // 键盘事件处理
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeImageModal();
+            }
+        });
+        
+        // 添加淡入动画样式
+        const fadeInStyle = document.createElement('style');
+        fadeInStyle.textContent = `
+            .fade-in-up {
+                animation: fadeInUp 0.6s ease forwards;
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            
+            @keyframes fadeInUp {
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+            
+            @keyframes fadeOut {
+                from {
+                    opacity: 1;
+                    transform: scale(1);
+                }
+                to {
+                    opacity: 0;
+                    transform: scale(0.9);
+                }
+            }
+            
+            .touch-device .subject-card:hover {
+                transform: none;
+            }
+            
+            .touch-device .subject-card:active {
+                transform: scale(0.95);
+            }
+            
+            .hidden {
+                display: none !important;
+            }
+        `;
+        document.head.appendChild(fadeInStyle);
+    </script>
+</body>
+</html>
