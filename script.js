@@ -11,34 +11,17 @@ function goToSubject(subjectName, chineseName) {
 
 // 页面加载完成后的初始化
 document.addEventListener('DOMContentLoaded', () => {
-    // 3 秒甜蜜开屏：先锁滚动并显示遮罩，隐藏主容器（container 初始已有 hidden）
-    const container = document.querySelector('.container');
-    const splash = document.getElementById('splash-overlay');
-    document.body.classList.add('no-scroll');
-
-    setTimeout(() => {
-        // 显示主内容
-        container.classList.remove('hidden');
-
-        // 添加一些动画效果（延后到页面显示时再触发，保证动画可见）
-        const cards = document.querySelectorAll('.subject-card');
-        cards.forEach((card, index) => {
-            card.style.animationDelay = `${index * 0.05}s`;
-            card.classList.add('fade-in-up');
-        });
-        
-        // 添加触摸支持
-        if ('ontouchstart' in window) {
-            document.body.classList.add('touch-device');
-        }
-
-        // 遮罩淡出并移除，解锁滚动
-        splash.classList.add('fade-out');
-        setTimeout(() => {
-            splash.remove();
-            document.body.classList.remove('no-scroll');
-        }, 500);
-    }, 3000);
+    // 添加一些动画效果
+    const cards = document.querySelectorAll('.subject-card');
+    cards.forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.05}s`;
+        card.classList.add('fade-in-up');
+    });
+    
+    // 添加触摸支持
+    if ('ontouchstart' in window) {
+        document.body.classList.add('touch-device');
+    }
 });
 
 // 添加淡入动画样式
