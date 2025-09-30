@@ -442,7 +442,7 @@ Lakukan sedikit kemajuan setiap hari dan Anda akan menjadi pegawai negeri sipil.
             }
             if (list.length === 0) {
                 box.classList.remove('hidden');
-                box.innerHTML = `<div class="search-empty">没有找到匹配项</div>`;
+                box.innerHTML = `<div class="search-empty">Tidak ada kecocokan yang ditemukan</div>`;
                 return;
             }
             const html = list.slice(0, 12).map((it, i) => {
@@ -602,7 +602,7 @@ Lakukan sedikit kemajuan setiap hari dan Anda akan menjadi pegawai negeri sipil.
         // 加载图片
         function loadImages() {
             const gallery = document.getElementById('imageGallery');
-            gallery.innerHTML = '<div class="loading">正在加载图片...</div>';
+            gallery.innerHTML = '<div class="loading">Memuat gambar...</div>';
             
             // 构建图片路径
             const basePath = `资料/${currentSubject}/${currentCategory}`;
@@ -918,9 +918,9 @@ Lakukan sedikit kemajuan setiap hari dan Anda akan menjadi pegawai negeri sipil.
             document.getElementById('backButton').classList.remove('hidden');
             
             // 更新页面标题
-            document.getElementById('pageTitle').textContent = 'Relax - 放松时光';
+            document.getElementById('pageTitle').textContent = 'Relax - Waktu bersantai';
             document.getElementById('mainTitle').textContent = '🎮 Relax';
-            document.getElementById('mainSubtitle').textContent = '放松一下，选择你喜欢的游戏';
+            document.getElementById('mainSubtitle').textContent = 'Bersantailah dan pilih permainan favorit Anda';
             
             // 添加动画效果
             const relaxCards = document.querySelectorAll('#relaxMenu .sub-menu-card');
@@ -937,3 +937,4 @@ Lakukan sedikit kemajuan setiap hari dan Anda akan menjadi pegawai negeri sipil.
     </script>
 </body>
 </html>
+
