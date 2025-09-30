@@ -2,13 +2,24 @@
 <html lang="zh">
 <head>
     <meta charset="UTF-8">
-    <title>sea and sky,Ayumi and Zhuyi</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="theme-color" content="#87CEEB">
+    <title>sea and sky</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
         }
 
         body {
@@ -22,8 +33,10 @@
             );
             overflow: hidden;
             font-family: 'Press Start 2P', monospace;
-            cursor: grab;  /* 添加拖拽光标 */
-            user-select: none;  /* 禁止文本选择 */
+            cursor: grab;
+            user-select: none;
+            touch-action: pan-x;
+            -webkit-overflow-scrolling: touch;
         }
 
         body:active {
@@ -147,22 +160,256 @@
         }
 
         #loading {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            color: #ffffff;
-            font-size: 16px;
-            text-align: center;
-            z-index: 200;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #87CEEB, #4682B4);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             font-family: 'Press Start 2P', monospace;
-            text-shadow: 2px 2px 0px #000;
-            animation: blink 1s infinite;
+            font-size: 12px;
+            z-index: 1000;
+            text-align: center;
+            padding: 20px;
         }
 
         @keyframes blink {
             0%, 50% { opacity: 1; }
             51%, 100% { opacity: 0; }
+        }
+
+        /* 移动端适配 */
+        @media screen and (max-width: 768px) {
+            .pixel-sun {
+                width: 40px;
+                height: 40px;
+                top: 8%;
+                right: 8%;
+            }
+
+            .detailed-cloud {
+                transform: scale(0.8);
+            }
+
+            .cloud1 {
+                top: 12%;
+                left: 15%;
+            }
+
+            .cloud2 {
+                top: 18%;
+                right: 20%;
+            }
+
+            .cloud3 {
+                top: 25%;
+                left: 45%;
+            }
+
+            .pixel-palm-tree {
+                width: 60px;
+                height: 90px;
+                bottom: 10%;
+                right: 10%;
+            }
+
+            .palm-trunk {
+                width: 10px;
+                height: 60px;
+            }
+
+            .palm-leaves {
+                width: 60px;
+                height: 30px;
+            }
+
+            .pixel-beach-umbrella {
+                width: 45px;
+                height: 60px;
+                bottom: 15%;
+                left: 15%;
+            }
+
+            .umbrella-top {
+                width: 45px;
+                height: 22px;
+            }
+
+            .umbrella-pole {
+                height: 38px;
+            }
+
+            .beach-image {
+                width: 45px;
+                height: 60px;
+                bottom: 15%;
+                left: 8%;
+            }
+
+            .little-girl {
+                width: 30px;
+                height: 45px;
+                bottom: 18%;
+                left: 30%;
+            }
+
+            .little-boy {
+                width: 28px;
+                height: 43px;
+                bottom: 20%;
+                left: 40%;
+            }
+
+            .sand-castle {
+                width: 24px;
+                height: 18px;
+                bottom: 15%;
+                left: 20%;
+            }
+
+            .pixel-beach-ball {
+                width: 24px;
+                height: 24px;
+                bottom: 12%;
+                left: 65%;
+            }
+
+            #info {
+                font-size: 6px;
+                line-height: 1.8;
+                padding: 8px;
+                top: 8px;
+                left: 8px;
+            }
+
+            .retro-ui {
+                font-size: 6px;
+                bottom: 8px;
+                right: 8px;
+                line-height: 1.8;
+            }
+
+            .pixel-bird {
+                font-size: 12px;
+            }
+        }
+
+        /* 超小屏幕适配 */
+        @media screen and (max-width: 480px) {
+            .pixel-sun {
+                width: 32px;
+                height: 32px;
+            }
+
+            .detailed-cloud {
+                transform: scale(0.6);
+            }
+
+            .pixel-palm-tree {
+                width: 48px;
+                height: 72px;
+            }
+
+            .pixel-beach-umbrella {
+                width: 36px;
+                height: 48px;
+            }
+
+            .beach-image {
+                width: 36px;
+                height: 48px;
+            }
+
+            .little-girl, .little-boy {
+                width: 24px;
+                height: 36px;
+            }
+
+            #info {
+                font-size: 5px;
+                padding: 6px;
+            }
+
+            .retro-ui {
+                font-size: 5px;
+            }
+
+            .pixel-bird {
+                font-size: 10px;
+            }
+
+            #loading {
+                font-size: 8px;
+            }
+        }
+
+        /* 横屏适配 */
+        @media screen and (orientation: landscape) and (max-height: 500px) {
+            .pixel-sun {
+                top: 5%;
+                right: 5%;
+            }
+
+            .detailed-cloud {
+                transform: scale(0.7);
+            }
+
+            .cloud1 { top: 8%; }
+            .cloud2 { top: 12%; }
+            .cloud3 { top: 16%; }
+
+            .pixel-palm-tree {
+                bottom: 8%;
+            }
+
+            .pixel-beach-umbrella {
+                bottom: 12%;
+            }
+
+            .beach-image {
+                bottom: 12%;
+            }
+
+            .little-girl {
+                bottom: 15%;
+            }
+
+            .little-boy {
+                bottom: 17%;
+            }
+
+            #info {
+                top: 5px;
+                left: 5px;
+            }
+
+            .retro-ui {
+                bottom: 5px;
+                right: 5px;
+            }
+        }
+
+        /* 触摸优化 */
+        .touch-hint {
+            position: absolute;
+            bottom: 50%;
+            left: 50%;
+            transform: translate(-50%, 50%);
+            color: rgba(255, 255, 255, 0.8);
+            font-size: 8px;
+            text-align: center;
+            pointer-events: none;
+            z-index: 200;
+            animation: fadeInOut 3s ease-in-out infinite;
+        }
+
+        @keyframes fadeInOut {
+            0%, 100% { opacity: 0; }
+            50% { opacity: 1; }
         }
 
         .pixel-sun {
@@ -548,7 +795,14 @@
     </style>
 </head>
 <body>
-    <div id="loading">LOADING SUNNY BEACH...</div>
+    <div id="loading">
+        <div>
+            🏖️ LOADING SUNNY BEACH... 🌊<br>
+            <div style="font-size: 8px; margin-top: 10px;">
+                适配移动设备中...
+            </div>
+        </div>
+    </div>
     <div id="container">
         <canvas id="pixelCanvas"></canvas>
         
@@ -557,6 +811,7 @@
             <div class="beach-texture"></div>
         </div>
         
+
 
         <!-- 明亮的太阳 -->
         <div class="pixel-sun"></div>
@@ -654,22 +909,27 @@
         let animationId, canvas, ctx;
         let time = 0;
         let mouseX = 0, mouseY = 0;
+        let isDragging = false;
+        let dragStartX = 0;
+        let cameraOffsetX = 0;
+        let totalOffsetX = 0;
+        let isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent);
         
-        // 像素化参数
-        const PIXEL_SIZE = 4;
+        // 移动端优化的像素化参数
+        const PIXEL_SIZE = isMobile ? 6 : 4;
         const CANVAS_WIDTH = Math.floor(window.innerWidth / PIXEL_SIZE);
         const CANVAS_HEIGHT = Math.floor(window.innerHeight / PIXEL_SIZE);
         
         // 噪声生成器
         const noise = new SimplexNoise();
         
-        // 海洋参数
+        // 移动端优化的海洋参数
         const oceanParams = {
-            waveHeight: 8,
-            waveSpeed: 0.015,
+            waveHeight: isMobile ? 6 : 8,
+            waveSpeed: 0.005,
             waveFrequency: 0.008,
             foamIntensity: 0.2,
-            reflectionStrength: 0.9
+            reflectionStrength: isMobile ? 0.7 : 0.9
         };
 
         // 初始化
@@ -679,7 +939,27 @@
             setupEventListeners();
             
             document.getElementById('loading').style.display = 'none';
+            
+            // 移动端提示
+            if (isMobile) {
+                showTouchHint();
+            }
+            
             animate();
+        }
+
+        // 显示触摸提示
+        function showTouchHint() {
+            const hint = document.createElement('div');
+            hint.className = 'touch-hint';
+            hint.innerHTML = '👆 滑动屏幕<br/>浏览海滩';
+            document.body.appendChild(hint);
+            
+            setTimeout(() => {
+                if (hint.parentNode) {
+                    hint.parentNode.removeChild(hint);
+                }
+            }, 6000);
         }
 
         // 设置像素画布
@@ -699,7 +979,7 @@
             ctx.msImageSmoothingEnabled = false;
         }
 
-        // 设置Three.js场景
+        // 设置Three.js场景 - 移动端优化
         function setupThreeJS() {
             scene = new THREE.Scene();
             
@@ -708,19 +988,24 @@
 
             renderer = new THREE.WebGLRenderer({ 
                 alpha: true, 
-                antialias: false,
-                preserveDrawingBuffer: true 
+                antialias: !isMobile,  // 移动端关闭抗锯齿以提升性能
+                preserveDrawingBuffer: true,
+                powerPreference: isMobile ? "low-power" : "high-performance"
             });
             renderer.setSize(CANVAS_WIDTH, CANVAS_HEIGHT);
-            renderer.shadowMap.enabled = true;
-            renderer.shadowMap.type = THREE.BasicShadowMap;
+            renderer.shadowMap.enabled = !isMobile;  // 移动端关闭阴影
+            if (!isMobile) {
+                renderer.shadowMap.type = THREE.BasicShadowMap;
+            }
 
-            // 创建场景元素
+            // 创建场景元素 - 移动端简化
             createSunnyOcean();
             createBeach3D();
-            createStaticClouds();
+            if (!isMobile) {
+                createStaticClouds();
+                createBeachParticles();
+            }
             createSunnyLighting();
-            createBeachParticles();
         }
 
         // 创建晴天海洋
@@ -1021,24 +1306,88 @@
             scene.add(foamSystem);
         }
 
-        // 设置事件监听
+        // 设置事件监听器 - 增强触摸支持
         function setupEventListeners() {
-            window.addEventListener('resize', onWindowResize, false);
-            window.addEventListener('mousemove', onMouseMove, false);
-            window.addEventListener('click', onMouseClick, false);
+            window.addEventListener('resize', onWindowResize);
+            
+            // 鼠标事件
+            window.addEventListener('mousemove', handlePointerMove);
+            window.addEventListener('mousedown', handlePointerStart);
+            window.addEventListener('mouseup', handlePointerEnd);
+            
+            // 触摸事件
+            window.addEventListener('touchstart', handlePointerStart, { passive: false });
+            window.addEventListener('touchmove', handlePointerMove, { passive: false });
+            window.addEventListener('touchend', handlePointerEnd, { passive: false });
+            
+            // 防止移动端页面滚动
+            document.addEventListener('touchmove', function(e) {
+                e.preventDefault();
+            }, { passive: false });
+            
+            // 防止双击缩放
+            let lastTouchEnd = 0;
+            document.addEventListener('touchend', function(event) {
+                const now = (new Date()).getTime();
+                if (now - lastTouchEnd <= 300) {
+                    event.preventDefault();
+                }
+                lastTouchEnd = now;
+            }, false);
         }
 
-        // 鼠标移动
-        function onMouseMove(event) {
-            mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-            mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+        // 统一的指针处理函数
+        function handlePointerStart(event) {
+            isDragging = true;
+            const clientX = event.touches ? event.touches[0].clientX : event.clientX;
+            dragStartX = clientX;
+            cameraOffsetX = 0;
+            document.body.style.cursor = 'grabbing';
+            
+            if (event.touches) {
+                event.preventDefault();
+            }
         }
 
-        // 鼠标点击
-        function onMouseClick(event) {
-            // 创建波浪效果
-            if (ocean) {
-                ocean.material.uniforms.mousePos.value.set(mouseX, mouseY);
+        function handlePointerMove(event) {
+            const clientX = event.touches ? event.touches[0].clientX : event.clientX;
+            const clientY = event.touches ? event.touches[0].clientY : event.clientY;
+            
+            if (isDragging) {
+                const deltaX = clientX - dragStartX;
+                cameraOffsetX = deltaX * (isMobile ? 0.3 : 0.5);  // 移动端减少灵敏度
+                
+                camera.position.x = totalOffsetX + cameraOffsetX;
+            } else {
+                mouseX = (clientX / window.innerWidth) * 2 - 1;
+                mouseY = -(clientY / window.innerHeight) * 2 + 1;
+            }
+            
+            if (event.touches) {
+                event.preventDefault();
+            }
+        }
+
+        function handlePointerEnd(event) {
+            if (isDragging) {
+                totalOffsetX += cameraOffsetX;
+                
+                // 循环拖拽
+                const maxOffset = isMobile ? 800 : 1000;  // 移动端减少范围
+                if (totalOffsetX > maxOffset) {
+                    totalOffsetX = -maxOffset;
+                } else if (totalOffsetX < -maxOffset) {
+                    totalOffsetX = maxOffset;
+                }
+                
+                camera.position.x = totalOffsetX;
+                cameraOffsetX = 0;
+            }
+            isDragging = false;
+            document.body.style.cursor = 'grab';
+            
+            if (event.touches) {
+                event.preventDefault();
             }
         }
 
@@ -1057,10 +1406,10 @@
             renderer.setSize(newWidth, newHeight);
         }
 
-        // 动画循环
+        // 动画循环 - 移动端优化
         function animate() {
             animationId = requestAnimationFrame(animate);
-            time += 0.008;  // 减慢整体时间流逝
+            time += isMobile ? 0.006 : 0.008;  // 移动端进一步减慢
 
             // 更新海洋
             if (ocean) {
@@ -1068,10 +1417,12 @@
                 ocean.material.uniforms.mousePos.value.set(mouseX, mouseY);
             }
 
-            // 更新云朵 - 更慢的漂移
-            clouds.forEach((cloud, index) => {
-                cloud.position.x = cloud.userData.originalX + Math.sin(time * cloud.userData.driftSpeed * 0.3) * 30;
-            });
+            // 更新云朵 - 仅在非移动端
+            if (!isMobile) {
+                clouds.forEach((cloud, index) => {
+                    cloud.position.x = cloud.userData.originalX + Math.sin(time * cloud.userData.driftSpeed * 0.3) * 30;
+                });
+            }
 
             // 更新海滩图片的浮动动画
             if (window.beachImage) {
@@ -1079,20 +1430,28 @@
                     Math.sin(time * window.beachImage.userData.floatSpeed) * 3;
             }
 
-            // 渲染到像素画布
+            // 渲染
             renderer.render(scene, camera);
             
-            // 获取渲染结果并应用像素化
-            const imageData = renderer.domElement.toDataURL();
-            const img = new Image();
-            img.onload = function() {
-                ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-                ctx.drawImage(img, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
-                
-                // 添加像素化后处理效果
-                addPixelEffects();
-            };
-            img.src = imageData;
+            // 移动端简化后处理
+            if (isMobile) {
+                const imageData = renderer.domElement.toDataURL('image/jpeg', 0.8);  // 使用JPEG压缩
+                const img = new Image();
+                img.onload = function() {
+                    ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+                    ctx.drawImage(img, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+                };
+                img.src = imageData;
+            } else {
+                const imageData = renderer.domElement.toDataURL();
+                const img = new Image();
+                img.onload = function() {
+                    ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+                    ctx.drawImage(img, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+                    addPixelEffects();
+                };
+                img.src = imageData;
+            }
         }
 
         // 添加像素效果
@@ -1122,5 +1481,4 @@
         });
     </script>
 </body>
-
 </html>
