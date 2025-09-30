@@ -23,7 +23,7 @@
     overlay.id = 'lovePopupOverlay';
     overlay.innerHTML = `
       <div class="love-popup">
-        <img src="love2.gif" alt="love" />
+        <img src="love.gif" alt="love" />
       </div>
     `;
     document.body.appendChild(overlay);
@@ -314,6 +314,11 @@ Lakukan sedikit kemajuan setiap hari dan Anda akan menjadi pegawai negeri sipil.
                     <h3>Exam</h3>
                     <p>考试</p>
                 </div>
+                <div class="subject-card" onclick="showRelaxMenu()">
+                    <div class="subject-icon">⌨</div>
+                    <h3>Relax</h3>
+                    <p>放松一下</p>
+                </div>
             </div>
             
             <!-- 子目录选择 -->
@@ -330,6 +335,20 @@ Lakukan sedikit kemajuan setiap hari dan Anda akan menjadi pegawai negeri sipil.
                     <div class="sub-menu-card" onclick="showContent('课后作业')">
                         <div class="sub-icon">📝</div>
                         <h3>Pekerjaan rumah</h3>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Relax 专用子菜单 -->
+            <div class="menu-section hidden" id="relaxMenu">
+                <div class="sub-menu-grid">
+                    <div class="sub-menu-card" onclick="openExternalLink('https://zhuyidashuaige.github.io/Ayumii/interesting%20page/helicopter.html')">
+                        <div class="sub-icon">🚁</div>
+                        <h3>Helicopter</h3>
+                    </div>
+                    <div class="sub-menu-card" onclick="openExternalLink('https://zhuyidashuaige.github.io/Ayumii/interesting%20page/fire%20dragon.html')">
+                        <div class="sub-icon">🐉</div>
+                        <h3>Fire Dragon</h3>
                     </div>
                 </div>
             </div>
@@ -554,6 +573,7 @@ Lakukan sedikit kemajuan setiap hari dan Anda akan menjadi pegawai negeri sipil.
         function goBack() {
             document.getElementById('subjectGrid').classList.remove('hidden');
             document.getElementById('subMenu').classList.add('hidden');
+            document.getElementById('relaxMenu').classList.add('hidden'); // 新增这行
             document.getElementById('contentSection').classList.add('hidden');
             document.getElementById('backButton').classList.add('hidden');
             
@@ -889,7 +909,31 @@ Lakukan sedikit kemajuan setiap hari dan Anda akan menjadi pegawai negeri sipil.
             }
         `;
         document.head.appendChild(fadeInStyle);
+
+        // 显示 Relax 专用菜单
+        function showRelaxMenu() {
+            // 隐藏主页面，显示 Relax 菜单
+            document.getElementById('subjectGrid').classList.add('hidden');
+            document.getElementById('relaxMenu').classList.remove('hidden');
+            document.getElementById('backButton').classList.remove('hidden');
+            
+            // 更新页面标题
+            document.getElementById('pageTitle').textContent = 'Relax - 放松时光';
+            document.getElementById('mainTitle').textContent = '🎮 Relax';
+            document.getElementById('mainSubtitle').textContent = '放松一下，选择你喜欢的游戏';
+            
+            // 添加动画效果
+            const relaxCards = document.querySelectorAll('#relaxMenu .sub-menu-card');
+            relaxCards.forEach((card, index) => {
+                card.style.animationDelay = `${index * 0.1}s`;
+                card.classList.add('fade-in-up');
+            });
+        }
+
+        // 打开外部链接
+        function openExternalLink(url) {
+            window.open(url, '_blank');
+        }
     </script>
 </body>
-
 </html>
