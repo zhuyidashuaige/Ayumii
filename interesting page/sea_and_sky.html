@@ -1,0 +1,1132 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>晴天海滩 - Sunny Beach Scene</title>
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(to bottom, 
+                #87CEEB 0%,     /* 天空蓝 */
+                #98D8E8 30%,    /* 浅蓝 */
+                #B0E0E6 60%,    /* 粉蓝 */
+                #F0E68C 100%    /* 沙滩色 */
+            );
+            overflow: hidden;
+            font-family: 'Press Start 2P', monospace;
+            cursor: grab;  /* 添加拖拽光标 */
+            user-select: none;  /* 禁止文本选择 */
+        }
+
+        body:active {
+            cursor: grabbing;
+        }
+        
+        #container {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to bottom,
+                #87CEEB 0%,
+                #B0E0E6 25%,
+                #87CEFA 50%,
+                #4682B4 75%,
+                #F4E4BC 85%,
+                #D2B48C 100%
+            );
+        }
+                /* 海滩图片 */
+        .beach-image {
+            position: absolute;
+            bottom: 12%;
+            left: 40%;  /* 在太阳伞左边 */
+            width: 120px;  /* 和太阳伞一样的宽度 */
+            height: 160px; /* 和太阳伞一样的高度 */
+            z-index: 55;
+            image-rendering: pixelated;
+            animation: gentleFloat 4s ease-in-out infinite;
+        }
+
+        .beach-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            image-rendering: pixelated;
+            filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.3));
+        }
+
+        @keyframes gentleFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-3px); }
+        }
+
+        /* 图片边框效果 */
+        .beach-image::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            border-radius: 4px;
+            z-index: -1;
+            animation: borderGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes borderGlow {
+            0%, 100% { opacity: 0.6; }
+            50% { opacity: 0.9; }
+        }
+        #pixelCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            image-rendering: pixelated;
+            image-rendering: -moz-crisp-edges;
+            image-rendering: crisp-edges;
+        }
+
+        /* 沙滩区域 */
+        .beach-area {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 25%;
+            background: linear-gradient(
+                to bottom,
+                #F4E4BC 0%,
+                #DEB887 50%,
+                #D2B48C 100%
+            );
+            z-index: 10;
+        }
+
+        .beach-texture {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                radial-gradient(circle at 20% 80%, rgba(139, 69, 19, 0.1) 1px, transparent 1px),
+                radial-gradient(circle at 80% 20%, rgba(160, 82, 45, 0.1) 1px, transparent 1px),
+                radial-gradient(circle at 40% 40%, rgba(205, 133, 63, 0.1) 1px, transparent 1px);
+            background-size: 20px 20px, 30px 30px, 25px 25px;
+            animation: beachShimmer 4s ease-in-out infinite;
+        }
+
+        @keyframes beachShimmer {
+            0%, 100% { opacity: 0.8; }
+            50% { opacity: 1; }
+        }
+
+        #info {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #ffffff;
+            font-size: 10px;
+            text-shadow: 2px 2px 0px #000;
+            z-index: 100;
+            background: rgba(0,0,0,0.6);
+            padding: 15px;
+            border: 2px solid #ffffff;
+            border-radius: 0;
+            font-family: 'Press Start 2P', monospace;
+            line-height: 1.8;
+        }
+
+        #loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: #ffffff;
+            font-size: 16px;
+            text-align: center;
+            z-index: 200;
+            font-family: 'Press Start 2P', monospace;
+            text-shadow: 2px 2px 0px #000;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+
+        .pixel-sun {
+            position: absolute;
+            top: 10%;
+            right: 20%;
+            width: 80px;
+            height: 80px;
+            background: 
+                radial-gradient(circle at 50% 50%, #FFD700 0%, #FFA500 40%, #FF8C00 70%, transparent 80%);
+            image-rendering: pixelated;
+            border-radius: 50%;
+            box-shadow: 
+                0 0 30px #FFD700,
+                0 0 60px #FFA500,
+                0 0 90px #FF8C00;
+            animation: sunGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes sunGlow {
+            0%, 100% { 
+                transform: scale(1);
+                filter: brightness(1);
+            }
+            50% { 
+                transform: scale(1.05);
+                filter: brightness(1.2);
+            }
+        }
+
+        /* 改进的云朵样式 */
+        .detailed-cloud {
+            position: absolute;
+            z-index: 20;
+            animation: cloudFloat 20s linear infinite;
+        }
+
+        .cloud-part {
+            position: absolute;
+            background: #ffffff;
+            border-radius: 50%;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .cloud1 {
+            top: 8%;
+            left: 10%;
+        }
+
+        .cloud1 .cloud-part:nth-child(1) { width: 60px; height: 40px; left: 0; top: 10px; }
+        .cloud1 .cloud-part:nth-child(2) { width: 80px; height: 50px; left: 40px; top: 0; }
+        .cloud1 .cloud-part:nth-child(3) { width: 70px; height: 45px; left: 100px; top: 8px; }
+        .cloud1 .cloud-part:nth-child(4) { width: 50px; height: 35px; left: 20px; top: 25px; }
+        .cloud1 .cloud-part:nth-child(5) { width: 65px; height: 40px; left: 80px; top: 30px; }
+
+        .cloud2 {
+            top: 15%;
+            left: 60%;
+            animation-delay: -8s;
+        }
+
+        .cloud2 .cloud-part:nth-child(1) { width: 70px; height: 45px; left: 0; top: 5px; }
+        .cloud2 .cloud-part:nth-child(2) { width: 90px; height: 55px; left: 50px; top: 0; }
+        .cloud2 .cloud-part:nth-child(3) { width: 60px; height: 40px; left: 120px; top: 10px; }
+        .cloud2 .cloud-part:nth-child(4) { width: 75px; height: 50px; left: 30px; top: 25px; }
+
+        .cloud3 {
+            top: 12%;
+            left: 30%;
+            animation-delay: -15s;
+        }
+
+        .cloud3 .cloud-part:nth-child(1) { width: 55px; height: 35px; left: 0; top: 15px; }
+        .cloud3 .cloud-part:nth-child(2) { width: 75px; height: 50px; left: 35px; top: 0; }
+        .cloud3 .cloud-part:nth-child(3) { width: 65px; height: 40px; left: 90px; top: 12px; }
+        .cloud3 .cloud-part:nth-child(4) { width: 45px; height: 30px; left: 15px; top: 30px; }
+        .cloud3 .cloud-part:nth-child(5) { width: 70px; height: 45px; left: 70px; top: 28px; }
+
+        @keyframes cloudFloat {
+            from { transform: translateX(-200px); }
+            to { transform: translateX(calc(100vw + 200px)); }
+        }
+
+        .pixel-bird {
+            position: absolute;
+            font-size: 16px;
+            color: #333333;
+            text-shadow: 1px 1px 0px #fff;
+            animation: pixelFly 15s linear infinite;
+            font-family: 'Press Start 2P', monospace;
+            z-index: 30;
+        }
+
+        @keyframes pixelFly {
+            0% { transform: translateX(-100px) translateY(0px) scaleX(1); }
+            25% { transform: translateX(25vw) translateY(-20px) scaleX(1); }
+            50% { transform: translateX(50vw) translateY(10px) scaleX(-1); }
+            75% { transform: translateX(75vw) translateY(-15px) scaleX(-1); }
+            100% { transform: translateX(100vw) translateY(5px) scaleX(-1); }
+        }
+
+        .beach-element {
+            position: absolute;
+            z-index: 50;
+        }
+
+        /* 像素椰子树 */
+        .pixel-palm-tree {
+            bottom: 8%;
+            right: 15%;
+            width: 80px;
+            height: 120px;
+            animation: palmSway 4s ease-in-out infinite;
+        }
+
+        .palm-trunk {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 12px;
+            height: 80px;
+            background: linear-gradient(to bottom, #8B4513 0%, #A0522D 50%, #8B4513 100%);
+            image-rendering: pixelated;
+        }
+
+        .palm-trunk::before {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 8px;
+            background: #654321;
+            left: 2px;
+            top: 20px;
+            box-shadow: 
+                0 16px 0 #654321,
+                0 32px 0 #654321,
+                0 48px 0 #654321;
+        }
+
+        .palm-leaves {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 40px;
+        }
+
+        .palm-leaf {
+            position: absolute;
+            background: #228B22;
+            image-rendering: pixelated;
+        }
+
+        .palm-leaf:nth-child(1) {
+            width: 32px;
+            height: 8px;
+            top: 16px;
+            left: 24px;
+            transform: rotate(-30deg);
+            border-radius: 0 4px 0 0;
+        }
+
+        .palm-leaf:nth-child(2) {
+            width: 28px;
+            height: 8px;
+            top: 8px;
+            left: 26px;
+            transform: rotate(0deg);
+            border-radius: 0 4px 0 0;
+        }
+
+        .palm-leaf:nth-child(3) {
+            width: 32px;
+            height: 8px;
+            top: 16px;
+            left: 24px;
+            transform: rotate(30deg);
+            border-radius: 0 4px 0 0;
+        }
+
+        .palm-leaf:nth-child(4) {
+            width: 24px;
+            height: 8px;
+            top: 20px;
+            left: 12px;
+            transform: rotate(-60deg);
+            border-radius: 0 4px 0 0;
+        }
+
+        .palm-leaf:nth-child(5) {
+            width: 24px;
+            height: 8px;
+            top: 20px;
+            right: 12px;
+            transform: rotate(60deg);
+            border-radius: 0 4px 0 0;
+        }
+
+        @keyframes palmSway {
+            0%, 100% { transform: rotate(-2deg); }
+            50% { transform: rotate(2deg); }
+        }
+
+        /* 像素太阳伞 */
+        .pixel-beach-umbrella {
+            bottom: 12%;
+            left: 20%;
+            width: 60px;
+            height: 80px;
+        }
+
+        .umbrella-pole {
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 50px;
+            background: #8B4513;
+            image-rendering: pixelated;
+        }
+
+        .umbrella-top {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60px;
+            height: 30px;
+        }
+
+        .umbrella-section {
+            position: absolute;
+            bottom: 0;
+            background: #FF6347;
+            image-rendering: pixelated;
+            border-radius: 30px 30px 0 0;
+        }
+
+        .umbrella-section:nth-child(1) {
+            left: 0;
+            width: 12px;
+            height: 24px;
+            background: #FF4500;
+        }
+
+        .umbrella-section:nth-child(2) {
+            left: 12px;
+            width: 12px;
+            height: 28px;
+            background: #FF6347;
+        }
+
+        .umbrella-section:nth-child(3) {
+            left: 24px;
+            width: 12px;
+            height: 30px;
+            background: #FF4500;
+        }
+
+        .umbrella-section:nth-child(4) {
+            left: 36px;
+            width: 12px;
+            height: 28px;
+            background: #FF6347;
+        }
+
+        .umbrella-section:nth-child(5) {
+            left: 48px;
+            width: 12px;
+            height: 24px;
+            background: #FF4500;
+        }
+
+        .umbrella-shadow {
+            position: absolute;
+            bottom: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 50px;
+            height: 8px;
+            background: rgba(0,0,0,0.3);
+            border-radius: 50%;
+            image-rendering: pixelated;
+        }
+
+        /* 像素海滩球 */
+        .pixel-beach-ball {
+            bottom: 8%;
+            left: 70%;
+            width: 32px;
+            height: 32px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        .ball-section {
+            position: absolute;
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            image-rendering: pixelated;
+        }
+
+        .ball-section:nth-child(1) {
+            background: conic-gradient(from 0deg, #FF1493 0deg 60deg, #00BFFF 60deg 120deg, #FFD700 120deg 180deg, #FF1493 180deg 240deg, #00BFFF 240deg 300deg, #FFD700 300deg 360deg);
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .seashells {
+            bottom: 5%;
+            left: 50%;
+            font-size: 16px;
+            color: #F0E68C;
+            text-shadow: 1px 1px 0px #000;
+        }
+
+        .beach-ball {
+            bottom: 8%;
+            left: 70%;
+            font-size: 20px;
+            color: #FF1493;
+            text-shadow: 1px 1px 0px #000;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        .retro-ui {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            color: #ffffff;
+            font-size: 8px;
+            font-family: 'Press Start 2P', monospace;
+            text-align: right;
+            line-height: 2;
+            text-shadow: 1px 1px 0px #000;
+            z-index: 100;
+        }
+
+        .scanlines {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                transparent,
+                transparent 2px,
+                rgba(255, 255, 255, 0.02) 2px,
+                rgba(255, 255, 255, 0.02) 4px
+            );
+            pointer-events: none;
+            animation: scanline 0.1s linear infinite;
+            z-index: 90;
+        }
+
+        @keyframes scanline {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(4px); }
+        }
+
+        .crt-effect {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at center, transparent 0%, rgba(0,0,0,0.2) 100%);
+            pointer-events: none;
+            z-index: 95;
+        }
+    </style>
+</head>
+<body>
+    <div id="loading">LOADING SUNNY BEACH...</div>
+    <div id="container">
+        <canvas id="pixelCanvas"></canvas>
+        
+        <!-- 沙滩区域 -->
+        <div class="beach-area">
+            <div class="beach-texture"></div>
+        </div>
+        
+        <div id="info">
+            <div>🏖️ SUNNY BEACH SCENE 🌊</div>
+            <div>MOUSE: CONTROL VIEW</div>
+            <div>WHEEL: ZOOM IN/OUT</div>
+            <div>CLICK: MAKE WAVES</div>
+            <div>PERFECT SUNNY DAY!</div>
+        </div>
+
+        <!-- 明亮的太阳 -->
+        <div class="pixel-sun"></div>
+
+        <!-- 详细的云朵 -->
+        <div class="detailed-cloud cloud1">
+            <div class="cloud-part"></div>
+            <div class="cloud-part"></div>
+            <div class="cloud-part"></div>
+            <div class="cloud-part"></div>
+            <div class="cloud-part"></div>
+        </div>
+
+        <div class="detailed-cloud cloud2">
+            <div class="cloud-part"></div>
+            <div class="cloud-part"></div>
+            <div class="cloud-part"></div>
+            <div class="cloud-part"></div>
+        </div>
+
+        <div class="detailed-cloud cloud3">
+            <div class="cloud-part"></div>
+            <div class="cloud-part"></div>
+            <div class="cloud-part"></div>
+            <div class="cloud-part"></div>
+            <div class="cloud-part"></div>
+        </div>
+
+        <!-- 海鸟 -->
+        <div class="pixel-bird" style="top: 25%; animation-delay: 0s;">🐦</div>
+        <div class="pixel-bird" style="top: 20%; animation-delay: 5s;">🐦</div>
+        <div class="pixel-bird" style="top: 28%; animation-delay: 10s;">🐦</div>
+
+        <!-- 海滩元素 -->
+        <div class="beach-element pixel-palm-tree">
+            <div class="palm-trunk"></div>
+            <div class="palm-leaves">
+                <div class="palm-leaf"></div>
+                <div class="palm-leaf"></div>
+                <div class="palm-leaf"></div>
+                <div class="palm-leaf"></div>
+                <div class="palm-leaf"></div>
+            </div>
+        </div>
+
+        <!-- 海滩图片 -->
+        <div class="beach-element beach-image">
+            <img src="sea_girl_boy.png" alt="Sea Girl Boy">
+        </div>
+
+        <div class="beach-element pixel-beach-umbrella">
+            <div class="umbrella-top">
+                <div class="umbrella-section"></div>
+                <div class="umbrella-section"></div>
+                <div class="umbrella-section"></div>
+                <div class="umbrella-section"></div>
+                <div class="umbrella-section"></div>
+            </div>
+            <div class="umbrella-pole"></div>
+            <div class="umbrella-shadow"></div>
+        </div>
+
+        <div class="beach-element pixel-beach-ball">
+            <div class="ball-section"></div>
+        </div>
+
+        <div class="beach-element seashells">🐚</div>
+        <div class="beach-element beach-ball">⚽</div>
+
+        <div class="retro-ui">
+            <div>WEATHER: SUNNY</div>
+            <div>TEMP: 28°C</div>
+            <div>WAVES: GENTLE</div>
+            <div>WIND: 1.2 M/S</div>
+        </div>
+
+        <!-- CRT效果 -->
+        <div class="scanlines"></div>
+        <div class="crt-effect"></div>
+    </div>
+
+    <!-- 引入高级外部资源 -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/simplex-noise/2.4.0/simplex-noise.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/EffectComposer.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/RenderPass.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/postprocessing/ShaderPass.js"></script>
+
+    <script>
+        // 全局变量
+        let scene, camera, renderer, controls;
+        let ocean, beach, clouds = [];
+        let animationId, canvas, ctx;
+        let time = 0;
+        let mouseX = 0, mouseY = 0;
+        
+        // 像素化参数
+        const PIXEL_SIZE = 4;
+        const CANVAS_WIDTH = Math.floor(window.innerWidth / PIXEL_SIZE);
+        const CANVAS_HEIGHT = Math.floor(window.innerHeight / PIXEL_SIZE);
+        
+        // 噪声生成器
+        const noise = new SimplexNoise();
+        
+        // 海洋参数
+        const oceanParams = {
+            waveHeight: 8,
+            waveSpeed: 0.015,
+            waveFrequency: 0.008,
+            foamIntensity: 0.2,
+            reflectionStrength: 0.9
+        };
+
+        // 初始化
+        function init() {
+            setupPixelCanvas();
+            setupThreeJS();
+            setupEventListeners();
+            
+            document.getElementById('loading').style.display = 'none';
+            animate();
+        }
+
+        // 设置像素画布
+        function setupPixelCanvas() {
+            canvas = document.getElementById('pixelCanvas');
+            ctx = canvas.getContext('2d');
+            
+            canvas.width = CANVAS_WIDTH;
+            canvas.height = CANVAS_HEIGHT;
+            canvas.style.width = window.innerWidth + 'px';
+            canvas.style.height = window.innerHeight + 'px';
+            
+            // 像素化设置
+            ctx.imageSmoothingEnabled = false;
+            ctx.webkitImageSmoothingEnabled = false;
+            ctx.mozImageSmoothingEnabled = false;
+            ctx.msImageSmoothingEnabled = false;
+        }
+
+        // 设置Three.js场景
+        function setupThreeJS() {
+            scene = new THREE.Scene();
+            
+            camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 3000);
+            camera.position.set(0, 20, 100);
+
+            renderer = new THREE.WebGLRenderer({ 
+                alpha: true, 
+                antialias: false,
+                preserveDrawingBuffer: true 
+            });
+            renderer.setSize(CANVAS_WIDTH, CANVAS_HEIGHT);
+            renderer.shadowMap.enabled = true;
+            renderer.shadowMap.type = THREE.BasicShadowMap;
+
+            // 创建场景元素
+            createSunnyOcean();
+            createBeach3D();
+            createStaticClouds();
+            createSunnyLighting();
+            createBeachParticles();
+        }
+
+        // 创建晴天海洋
+        function createSunnyOcean() {
+            const oceanGeometry = new THREE.PlaneGeometry(2000, 1500, 150, 100);
+            
+            const oceanMaterial = new THREE.ShaderMaterial({
+                uniforms: {
+                    time: { value: 0 },
+                    mousePos: { value: new THREE.Vector2(0, 0) },
+                    resolution: { value: new THREE.Vector2(CANVAS_WIDTH, CANVAS_HEIGHT) },
+                    waveHeight: { value: oceanParams.waveHeight },
+                    waveSpeed: { value: oceanParams.waveSpeed },
+                    deepColor: { value: new THREE.Color(0x006994) },
+                    shallowColor: { value: new THREE.Color(0x40E0D0) },
+                    foamColor: { value: new THREE.Color(0xffffff) }
+                },
+                vertexShader: `
+                    uniform float time;
+                    uniform float waveHeight;
+                    uniform vec2 mousePos;
+                    varying vec3 vPosition;
+                    varying vec3 vNormal;
+                    varying float vElevation;
+                    
+                    float random(vec2 st) {
+                        return fract(sin(dot(st.xy, vec2(12.9898,78.233))) * 43758.5453123);
+                    }
+                    
+                    float noise(vec2 st) {
+                        vec2 i = floor(st);
+                        vec2 f = fract(st);
+                        float a = random(i);
+                        float b = random(i + vec2(1.0, 0.0));
+                        float c = random(i + vec2(0.0, 1.0));
+                        float d = random(i + vec2(1.0, 1.0));
+                        vec2 u = f * f * (3.0 - 2.0 * f);
+                        return mix(a, b, u.x) + (c - a)* u.y * (1.0 - u.x) + (d - b) * u.x * u.y;
+                    }
+                    
+                    void main() {
+                        vPosition = position;
+                        
+                        // 温和的横向波浪
+                        float elevation = 0.0;
+                        
+                        // 主要横向波浪 - 更温和
+                        elevation += sin(position.y * 0.015 + time * 1.5) * waveHeight * 0.5;
+                        elevation += sin(position.y * 0.02 + time * 1.2) * waveHeight * 0.3;
+                        
+                        // 次要波浪
+                        elevation += sin(position.y * 0.06 + time * 2.8) * waveHeight * 0.1;
+                        elevation += sin(position.y * 0.1 + time * 3.2) * waveHeight * 0.05;
+                        
+                        // 轻微的纵向扰动
+                        elevation += sin(position.x * 0.003 + time * 0.6) * waveHeight * 0.08;
+                        
+                        // 噪声波浪
+                        elevation += noise(position.xy * 0.008 + time * 0.3) * waveHeight * 0.15;
+                        
+                        // 鼠标交互波浪
+                        float mouseDist = distance(position.xy, mousePos * 100.0);
+                        elevation += sin(mouseDist * 0.08 - time * 4.0) * waveHeight * 0.2 * 
+                                    exp(-mouseDist * 0.008);
+                        
+                        vElevation = elevation;
+                        
+                        vec3 pos = position;
+                        pos.z = elevation;
+                        
+                        // 计算法线
+                        vec3 tangentX = vec3(1.0, 0.0, 
+                            cos(pos.x * 0.003 + time * 0.6) * waveHeight * 0.0003);
+                        vec3 tangentY = vec3(0.0, 1.0, 
+                            cos(pos.y * 0.015 + time * 1.5) * waveHeight * 0.008);
+                        vNormal = normalize(cross(tangentX, tangentY));
+                        
+                        gl_Position = projectionMatrix * modelViewMatrix * vec4(pos, 1.0);
+                    }
+                `,
+                fragmentShader: `
+                    uniform float time;
+                    uniform vec2 resolution;
+                    uniform vec3 deepColor;
+                    uniform vec3 shallowColor;
+                    uniform vec3 foamColor;
+                    varying vec3 vPosition;
+                    varying vec3 vNormal;
+                    varying float vElevation;
+                    
+                    void main() {
+                        // 基础颜色混合 - 更明亮
+                        float depth = clamp(vElevation * 0.15 + 0.6, 0.0, 1.0);
+                        vec3 waterColor = mix(deepColor, shallowColor, depth);
+                        
+                        // 温和的泡沫效果
+                        float foam = step(0.8, sin(vPosition.y * 0.06 + time * 2.5) * 
+                                         sin(vPosition.y * 0.1 + time * 2.0));
+                        foam *= step(6.0, vElevation);
+                        
+                        // 强烈的阳光反射
+                        vec3 lightDir = normalize(vec3(1.0, 1.5, 0.8));
+                        float reflection = pow(max(dot(vNormal, lightDir), 0.0), 16.0);
+                        
+                        // 最终颜色 - 更明亮
+                        vec3 finalColor = mix(waterColor, foamColor, foam * 0.6);
+                        finalColor += reflection * vec3(1.0, 1.0, 0.9) * 0.8;
+                        
+                        // 阳光闪烁效果
+                        float sparkle = step(0.98, sin(vPosition.x * 0.1 + time * 4.0) * 
+                                           sin(vPosition.y * 0.1 + time * 3.5));
+                        finalColor += sparkle * vec3(1.0, 1.0, 0.8) * 0.5;
+                        
+                        gl_FragColor = vec4(finalColor, 0.85);
+                    }
+                `,
+                transparent: true,
+                side: THREE.DoubleSide
+            });
+
+            ocean = new THREE.Mesh(oceanGeometry, oceanMaterial);
+            ocean.rotation.x = -Math.PI / 2;
+            ocean.position.y = 0;
+            ocean.position.z = -200;
+            scene.add(ocean);
+        }
+
+        // 创建3D海滩
+        function createBeach3D() {
+            const beachGeometry = new THREE.PlaneGeometry(2000, 800, 100, 50);
+            const beachMaterial = new THREE.MeshLambertMaterial({
+                color: 0xF4E4BC,
+                transparent: false
+            });
+
+            beach = new THREE.Mesh(beachGeometry, beachMaterial);
+            beach.rotation.x = -Math.PI / 2;
+            beach.position.set(0, -5, 200);
+            scene.add(beach);
+
+            // 添加海滩装饰
+            createBeachDecorations();
+        }
+
+        // 创建海滩装饰
+        function createBeachDecorations() {
+            // 加载并添加海滩图片
+            const textureLoader = new THREE.TextureLoader();
+            textureLoader.load('sea_girl_boy.png', function(texture) {
+                // 设置像素化纹理
+                texture.magFilter = THREE.NearestFilter;
+                texture.minFilter = THREE.NearestFilter;
+                texture.generateMipmaps = false;
+                
+                const imageGeometry = new THREE.PlaneGeometry(40, 50);
+                const imageMaterial = new THREE.MeshLambertMaterial({
+                    map: texture,
+                    transparent: true,
+                    alphaTest: 0.1
+                });
+                
+                const imagePlane = new THREE.Mesh(imageGeometry, imageMaterial);
+                imagePlane.position.set(-200, 25, 320);
+                imagePlane.rotation.y = Math.PI * 0.1; // 稍微旋转面向观众
+                
+                // 添加轻微的浮动动画
+                imagePlane.userData = {
+                    originalY: imagePlane.position.y,
+                    floatSpeed: 0.02
+                };
+                
+                scene.add(imagePlane);
+                
+                // 保存引用以便在动画中更新
+                window.beachImage = imagePlane;
+            }, undefined, function(error) {
+                console.log('图片加载失败:', error);
+                // 如果图片加载失败，创建一个替代的彩色平面
+                const fallbackGeometry = new THREE.PlaneGeometry(40, 50);
+                const fallbackMaterial = new THREE.MeshLambertMaterial({
+                    color: 0x87CEEB,
+                    transparent: true,
+                    opacity: 0.8
+                });
+                
+                const fallbackPlane = new THREE.Mesh(fallbackGeometry, fallbackMaterial);
+                fallbackPlane.position.set(-200, 25, 320);
+                scene.add(fallbackPlane);
+            });
+
+            // 棕榈树 - 调大尺寸
+            const palmGeometry = new THREE.CylinderGeometry(5, 7, 80, 8);
+            const palmMaterial = new THREE.MeshLambertMaterial({ color: 0x8B4513 });
+            
+            for (let i = 0; i < 4; i++) {
+                const palm = new THREE.Mesh(palmGeometry, palmMaterial);
+                palm.position.set(
+                    (Math.random() - 0.5) * 600,
+                    35,
+                    300 + Math.random() * 200
+                );
+                scene.add(palm);
+
+                // 棕榈叶 - 调大尺寸
+                const leavesGeometry = new THREE.SphereGeometry(35, 8, 6);
+                const leavesMaterial = new THREE.MeshLambertMaterial({ color: 0x228B22 });
+                const leaves = new THREE.Mesh(leavesGeometry, leavesMaterial);
+                leaves.position.copy(palm.position);
+                leaves.position.y += 50;
+                scene.add(leaves);
+            }
+
+            // 海滩球
+            const ballGeometry = new THREE.SphereGeometry(8, 16, 16);
+            const ballMaterial = new THREE.MeshLambertMaterial({ color: 0xFF1493 });
+            const ball = new THREE.Mesh(ballGeometry, ballMaterial);
+            ball.position.set(100, 3, 350);
+            scene.add(ball);
+
+            // 遮阳伞 - 调大尺寸
+            const umbrellaGeometry = new THREE.ConeGeometry(40, 25, 8);
+            const umbrellaMaterial = new THREE.MeshLambertMaterial({ color: 0xFF6347 });
+            const umbrella = new THREE.Mesh(umbrellaGeometry, umbrellaMaterial);
+            umbrella.position.set(-150, 18, 320);
+            scene.add(umbrella);
+        }
+
+        // 创建静态云朵
+        function createStaticClouds() {
+            for (let i = 0; i < 8; i++) {
+                const cloudGeometry = new THREE.SphereGeometry(25, 8, 8);
+                const cloudMaterial = new THREE.MeshLambertMaterial({
+                    color: 0xffffff,
+                    transparent: true,
+                    opacity: 0.9
+                });
+
+                const cloud = new THREE.Mesh(cloudGeometry, cloudMaterial);
+                cloud.position.set(
+                    (Math.random() - 0.5) * 1200,
+                    Math.random() * 80 + 120,
+                    (Math.random() - 0.5) * 1200
+                );
+                
+                // 静态云朵，只有轻微的漂移
+                cloud.userData = {
+                    originalX: cloud.position.x,
+                    driftSpeed: Math.random() * 0.05 + 0.02
+                };
+                
+                clouds.push(cloud);
+                scene.add(cloud);
+            }
+        }
+
+        // 创建晴天光照
+        function createSunnyLighting() {
+            // 明亮的环境光
+            const ambientLight = new THREE.AmbientLight(0x87CEEB, 0.7);
+            scene.add(ambientLight);
+
+            // 强烈的太阳光
+            const sunLight = new THREE.DirectionalLight(0xFFD700, 1.8);
+            sunLight.position.set(200, 200, 100);
+            sunLight.castShadow = true;
+            sunLight.shadow.mapSize.width = 2048;
+            sunLight.shadow.mapSize.height = 2048;
+            scene.add(sunLight);
+
+            // 额外的填充光
+            const fillLight = new THREE.DirectionalLight(0x87CEEB, 0.4);
+            fillLight.position.set(-100, 50, 200);
+            scene.add(fillLight);
+        }
+
+        // 创建海滩粒子效果
+        function createBeachParticles() {
+            // 海浪泡沫粒子
+            const foamParticles = new THREE.BufferGeometry();
+            const foamPositions = new Float32Array(400 * 3);
+            
+            for (let i = 0; i < 400; i++) {
+                foamPositions[i * 3] = (Math.random() - 0.5) * 1000;
+                foamPositions[i * 3 + 1] = Math.random() * 20;
+                foamPositions[i * 3 + 2] = (Math.random() - 0.5) * 800;
+            }
+            
+            foamParticles.setAttribute('position', new THREE.BufferAttribute(foamPositions, 3));
+            
+            const foamMaterial = new THREE.PointsMaterial({
+                color: 0xffffff,
+                size: 2,
+                transparent: true,
+                opacity: 0.7
+            });
+            
+            const foamSystem = new THREE.Points(foamParticles, foamMaterial);
+            scene.add(foamSystem);
+        }
+
+        // 设置事件监听
+        function setupEventListeners() {
+            window.addEventListener('resize', onWindowResize, false);
+            window.addEventListener('mousemove', onMouseMove, false);
+            window.addEventListener('click', onMouseClick, false);
+        }
+
+        // 鼠标移动
+        function onMouseMove(event) {
+            mouseX = (event.clientX / window.innerWidth) * 2 - 1;
+            mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
+        }
+
+        // 鼠标点击
+        function onMouseClick(event) {
+            // 创建波浪效果
+            if (ocean) {
+                ocean.material.uniforms.mousePos.value.set(mouseX, mouseY);
+            }
+        }
+
+        // 窗口大小调整
+        function onWindowResize() {
+            const newWidth = Math.floor(window.innerWidth / PIXEL_SIZE);
+            const newHeight = Math.floor(window.innerHeight / PIXEL_SIZE);
+            
+            canvas.width = newWidth;
+            canvas.height = newHeight;
+            canvas.style.width = window.innerWidth + 'px';
+            canvas.style.height = window.innerHeight + 'px';
+            
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(newWidth, newHeight);
+        }
+
+        // 动画循环
+        function animate() {
+            animationId = requestAnimationFrame(animate);
+            time += 0.008;  // 减慢整体时间流逝
+
+            // 更新海洋
+            if (ocean) {
+                ocean.material.uniforms.time.value = time;
+                ocean.material.uniforms.mousePos.value.set(mouseX, mouseY);
+            }
+
+            // 更新云朵 - 更慢的漂移
+            clouds.forEach((cloud, index) => {
+                cloud.position.x = cloud.userData.originalX + Math.sin(time * cloud.userData.driftSpeed * 0.3) * 30;
+            });
+
+            // 更新海滩图片的浮动动画
+            if (window.beachImage) {
+                window.beachImage.position.y = window.beachImage.userData.originalY + 
+                    Math.sin(time * window.beachImage.userData.floatSpeed) * 3;
+            }
+
+            // 渲染到像素画布
+            renderer.render(scene, camera);
+            
+            // 获取渲染结果并应用像素化
+            const imageData = renderer.domElement.toDataURL();
+            const img = new Image();
+            img.onload = function() {
+                ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+                ctx.drawImage(img, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+                
+                // 添加像素化后处理效果
+                addPixelEffects();
+            };
+            img.src = imageData;
+        }
+
+        // 添加像素效果
+        function addPixelEffects() {
+            const imageData = ctx.getImageData(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+            const data = imageData.data;
+            
+            // 添加轻微的抖动效果
+            for (let i = 0; i < data.length; i += 4) {
+                const noise = (Math.random() - 0.5) * 3;
+                data[i] = Math.max(0, Math.min(255, data[i] + noise));     // R
+                data[i + 1] = Math.max(0, Math.min(255, data[i + 1] + noise)); // G
+                data[i + 2] = Math.max(0, Math.min(255, data[i + 2] + noise)); // B
+            }
+            
+            ctx.putImageData(imageData, 0, 0);
+        }
+
+        // 初始化
+        window.addEventListener('load', init);
+        
+        // 清理
+        window.addEventListener('beforeunload', () => {
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+        });
+    </script>
+</body>
+</html>
