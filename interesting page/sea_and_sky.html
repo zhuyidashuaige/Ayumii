@@ -7,8 +7,49 @@
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="theme-color" content="#87CEEB">
-    <title>sea and sky</title>
+    <title>🏖️sea and sky</title>
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Orbitron:wght@400;700;900&display=swap" rel="stylesheet">
+    <script>
+                function setupPixelCanvas() {
+            canvas = document.getElementById('pixelCanvas');
+            ctx = canvas.getContext('2d');
+            
+            const container = document.getElementById('container');
+            const containerRect = container.getBoundingClientRect();
+            
+            const canvasWidth = Math.floor(containerRect.width / PIXEL_SIZE);
+            const canvasHeight = Math.floor(containerRect.height / PIXEL_SIZE);
+            
+            canvas.width = canvasWidth;
+            canvas.height = canvasHeight;
+            canvas.style.width = containerRect.width + 'px';
+            canvas.style.height = containerRect.height + 'px';
+            
+            // 像素化设置
+            ctx.imageSmoothingEnabled = false;
+            ctx.webkitImageSmoothingEnabled = false;
+            ctx.mozImageSmoothingEnabled = false;
+            ctx.msImageSmoothingEnabled = false;
+        }
+
+        // 窗口大小调整
+        function onWindowResize() {
+            const container = document.getElementById('container');
+            const containerRect = container.getBoundingClientRect();
+            
+            const newWidth = Math.floor(containerRect.width / PIXEL_SIZE);
+            const newHeight = Math.floor(containerRect.height / PIXEL_SIZE);
+            
+            canvas.width = newWidth;
+            canvas.height = newHeight;
+            canvas.style.width = containerRect.width + 'px';
+            canvas.style.height = containerRect.height + 'px';
+            
+            camera.aspect = containerRect.width / containerRect.height;
+            camera.updateProjectionMatrix();
+            renderer.setSize(newWidth, newHeight);
+        }
+    </script>
     <style>
         * {
             margin: 0;
@@ -25,28 +66,109 @@
         body {
             margin: 0;
             padding: 0;
+            background: #2c3e50;  /* 外部背景色 */
+            overflow: hidden;
+            font-family: 'Press Start 2P', monospace;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            touch-action: pan-x;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* 主要的网页框架 */
+        .webpage-frame {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            max-width: 1200px;  /* 最大宽度限制 */
+            max-height: 800px;  /* 最大高度限制 */
+            min-width: 320px;   /* 最小宽度 */
+            min-height: 240px;  /* 最小高度 */
             background: linear-gradient(to bottom, 
                 #87CEEB 0%,     /* 天空蓝 */
                 #98D8E8 30%,    /* 浅蓝 */
                 #B0E0E6 60%,    /* 粉蓝 */
                 #F0E68C 100%    /* 沙滩色 */
             );
+            border: 4px solid #34495e;
+            border-radius: 8px;
+            box-shadow: 
+                0 0 20px rgba(0,0,0,0.5),
+                inset 0 0 10px rgba(255,255,255,0.1);
             overflow: hidden;
-            font-family: 'Press Start 2P', monospace;
             cursor: grab;
             user-select: none;
-            touch-action: pan-x;
-            -webkit-overflow-scrolling: touch;
         }
 
-        body:active {
+        .webpage-frame:active {
             cursor: grabbing;
         }
-        
+
+        /* 框架装饰 */
+        .webpage-frame::before {
+            content: '';
+            position: absolute;
+            top: -2px;
+            left: -2px;
+            right: -2px;
+            bottom: -2px;
+            background: linear-gradient(45deg, #3498db, #2980b9, #3498db, #2980b9);
+            border-radius: 10px;
+            z-index: -1;
+            animation: frameGlow 3s ease-in-out infinite;
+        }
+
+        @keyframes frameGlow {
+            0%, 100% { opacity: 0.7; }
+            50% { opacity: 1; }
+        }
+
+        /* 框架标题栏 */
+        .frame-header {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 24px;
+            background: linear-gradient(to bottom, #34495e, #2c3e50);
+            border-bottom: 2px solid #1a252f;
+            display: flex;
+            align-items: center;
+            padding: 0 8px;
+            z-index: 1000;
+        }
+
+        .frame-title {
+            color: #ecf0f1;
+            font-size: 8px;
+            font-family: 'Press Start 2P', monospace;
+            flex: 1;
+        }
+
+        .frame-controls {
+            display: flex;
+            gap: 4px;
+        }
+
+        .frame-button {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            border: 1px solid #1a252f;
+        }
+
+        .frame-button.close { background: #e74c3c; }
+        .frame-button.minimize { background: #f39c12; }
+        .frame-button.maximize { background: #27ae60; }
+
         #container {
             position: absolute;
-            width: 100%;
-            height: 100%;
+            top: 24px;  /* 为标题栏留出空间 */
+            left: 0;
+            right: 0;
+            bottom: 0;
             background: linear-gradient(
                 to bottom,
                 #87CEEB 0%,
@@ -99,13 +221,28 @@
             0%, 100% { opacity: 0.6; }
             50% { opacity: 0.9; }
         }
+        /* 调整所有元素的定位基准 */
+        .pixel-sun,
+        .detailed-cloud,
+        .pixel-bird,
+        .beach-element,
+        #info,
+        .retro-ui,
+        .scanlines,
+        .crt-effect,
+        .touch-hint {
+            position: absolute;
+            /* 所有定位都相对于#container */
+        }
+
         #pixelCanvas {
             position: absolute;
             top: 0;
             left: 0;
+            width: 100%;
+            height: 100%;
             image-rendering: pixelated;
-            image-rendering: -moz-crisp-edges;
-            image-rendering: crisp-edges;
+            z-index: 1;
         }
 
         /* 沙滩区域 */
@@ -159,8 +296,9 @@
             line-height: 1.8;
         }
 
+        /* 加载界面也要在框架内 */
         #loading {
-            position: fixed;
+            position: absolute;
             top: 0;
             left: 0;
             width: 100%;
@@ -182,8 +320,32 @@
             51%, 100% { opacity: 0; }
         }
 
-        /* 移动端适配 */
+        /* 移动端适配 - 调整框架大小 */
         @media screen and (max-width: 768px) {
+            .webpage-frame {
+                width: 95vw;
+                height: 95vh;
+                max-width: none;
+                max-height: none;
+                border-width: 2px;
+            }
+
+            .frame-header {
+                height: 20px;
+            }
+
+            .frame-title {
+                font-size: 6px;
+            }
+
+            .frame-button {
+                width: 10px;
+                height: 10px;
+            }
+
+            #container {
+                top: 20px;
+            }
             .pixel-sun {
                 width: 40px;
                 height: 40px;
@@ -300,6 +462,29 @@
 
         /* 超小屏幕适配 */
         @media screen and (max-width: 480px) {
+            .webpage-frame {
+                width: 98vw;
+                height: 98vh;
+                border-width: 1px;
+                border-radius: 4px;
+            }
+
+            .frame-header {
+                height: 16px;
+            }
+
+            .frame-title {
+                font-size: 5px;
+            }
+
+            .frame-button {
+                width: 8px;
+                height: 8px;
+            }
+
+            #container {
+                top: 16px;
+            }
             .pixel-sun {
                 width: 32px;
                 height: 32px;
@@ -795,21 +980,37 @@
     </style>
 </head>
 <body>
-    <div id="loading">
-        <div>
-            🏖️ LOADING SUNNY BEACH... 🌊<br>
-            <div style="font-size: 8px; margin-top: 10px;">
-                适配移动设备中...
+    <div class="webpage-frame">
+        <!-- 框架标题栏 -->
+        <div class="frame-header">
+            <div class="frame-title">🏖️sea and sky</div>
+            <div class="frame-controls">
+                <div class="frame-button minimize"></div>
+                <div class="frame-button maximize"></div>
+                <div class="frame-button close"></div>
             </div>
         </div>
-    </div>
-    <div id="container">
-        <canvas id="pixelCanvas"></canvas>
-        
-        <!-- 沙滩区域 -->
-        <div class="beach-area">
-            <div class="beach-texture"></div>
+
+        <!-- 加载界面 -->
+        <div id="loading">
+            <div>
+                🏖️ LOADING SUNNY BEACH... 🌊<br>
+                <div style="font-size: 8px; margin-top: 10px;">
+                    适配移动设备中...
+                </div>
+            </div>
         </div>
+
+        <!-- 主要内容容器 -->
+        <div id="container">
+            <canvas id="pixelCanvas"></canvas>
+            
+            <!-- 沙滩区域 -->
+            <div class="beach-area">
+                <div class="beach-texture"></div>
+            </div>
+            
+
         
 
 
@@ -845,17 +1046,22 @@
         <div class="pixel-bird" style="top: 20%; animation-delay: 5s;">🐦</div>
         <div class="pixel-bird" style="top: 28%; animation-delay: 10s;">🐦</div>
 
-        <!-- 海滩元素 -->
-        <div class="beach-element pixel-palm-tree">
-            <div class="palm-trunk"></div>
-            <div class="palm-leaves">
-                <div class="palm-leaf"></div>
-                <div class="palm-leaf"></div>
-                <div class="palm-leaf"></div>
-                <div class="palm-leaf"></div>
-                <div class="palm-leaf"></div>
+        <!-- 海滩图片 -->
+            <div class="beach-element beach-image">
+                <img src="sea_girl_boy.png" alt="Sea Girl Boy">
             </div>
-        </div>
+
+            <!-- 海滩元素 -->
+            <div class="beach-element pixel-palm-tree">
+                <div class="palm-trunk"></div>
+                <div class="palm-leaves">
+                    <div class="palm-leaf"></div>
+                    <div class="palm-leaf"></div>
+                    <div class="palm-leaf"></div>
+                    <div class="palm-leaf"></div>
+                    <div class="palm-leaf"></div>
+                </div>
+            </div>
 
         <!-- 海滩图片 -->
         <div class="beach-element beach-image">
@@ -874,12 +1080,36 @@
             <div class="umbrella-shadow"></div>
         </div>
 
-        <div class="beach-element pixel-beach-ball">
-            <div class="ball-section"></div>
-        </div>
+        <!-- 海滩上的小孩 -->
+            <div class="beach-element pixel-child little-girl">
+                <div class="girl-hat"></div>
+                <div class="girl-head"></div>
+                <div class="girl-body"></div>
+                <div class="girl-legs"></div>
+                <div class="child-shadow"></div>
+            </div>
 
-        <div class="beach-element seashells">🐚</div>
-        <div class="beach-element beach-ball">⚽</div>
+            <div class="beach-element pixel-child little-boy">
+                <div class="boy-hat"></div>
+                <div class="boy-head"></div>
+                <div class="boy-body"></div>
+                <div class="boy-legs"></div>
+                <div class="child-shadow"></div>
+            </div>
+
+            <!-- 沙堡 -->
+            <div class="beach-element pixel-child sand-castle">
+                <div class="castle-base"></div>
+                <div class="castle-tower">
+                    <div class="castle-flag"></div>
+                </div>
+            </div>
+
+            <div class="beach-element pixel-beach-ball">
+                <div class="ball-section"></div>
+            </div>
+
+            <div class="beach-element seashells">🐚</div>
 
         <div class="retro-ui">
             <div>WEATHER: SUNNY</div>
@@ -891,6 +1121,7 @@
         <!-- CRT效果 -->
         <div class="scanlines"></div>
         <div class="crt-effect"></div>
+    </div>
     </div>
 
     <!-- 引入高级外部资源 -->
