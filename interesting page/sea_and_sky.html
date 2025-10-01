@@ -34,18 +34,17 @@
 
         // 窗口大小调整 - 适配固定框架
         function onWindowResize() {
-            const frameWidth = 1200;
-            const frameHeight = 576; // 600 - 24 (标题栏高度)
-            
-            const newWidth = Math.floor(frameWidth / PIXEL_SIZE);
-            const newHeight = Math.floor(frameHeight / PIXEL_SIZE);
-            
+            const rect = document.getElementById('container').getBoundingClientRect();
+
+            const newWidth = Math.floor(rect.width / PIXEL_SIZE);
+            const newHeight = Math.floor(rect.height / PIXEL_SIZE);
+
             canvas.width = newWidth;
             canvas.height = newHeight;
-            canvas.style.width = frameWidth + 'px';
-            canvas.style.height = frameHeight + 'px';
-            
-            camera.aspect = frameWidth / frameHeight;
+            canvas.style.width = rect.width + 'px';
+            canvas.style.height = rect.height + 'px';
+
+            camera.aspect = rect.width / rect.height;
             camera.updateProjectionMatrix();
             renderer.setSize(newWidth, newHeight);
         }
@@ -1210,12 +1209,18 @@
         function setupPixelCanvas() {
             canvas = document.getElementById('pixelCanvas');
             ctx = canvas.getContext('2d');
-            
-            canvas.width = CANVAS_WIDTH;
-            canvas.height = CANVAS_HEIGHT;
-            canvas.style.width = window.innerWidth + 'px';
-            canvas.style.height = window.innerHeight + 'px';
-            
+
+            const container = document.getElementById('container');
+            const rect = container.getBoundingClientRect();
+
+            const w = Math.floor(rect.width / PIXEL_SIZE);
+            const h = Math.floor(rect.height / PIXEL_SIZE);
+
+            canvas.width = w;
+            canvas.height = h;
+            canvas.style.width = rect.width + 'px';
+            canvas.style.height = rect.height + 'px';
+
             // 像素化设置
             ctx.imageSmoothingEnabled = false;
             ctx.webkitImageSmoothingEnabled = false;
@@ -1226,7 +1231,7 @@
         // 设置Three.js场景 - 移动端优化
         function setupThreeJS() {
             scene = new THREE.Scene();
-            
+
             camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 1, 3000);
             camera.position.set(0, 20, 100);
 
@@ -1238,6 +1243,10 @@
             });
             renderer.setSize(CANVAS_WIDTH, CANVAS_HEIGHT);
             renderer.shadowMap.enabled = !isMobile;  // 移动端关闭阴影
+
+            // 指定清屏颜色，避免导出 JPEG 时透明背景变黑
+            renderer.setClearColor(0x87CEEB, 1);
+
             if (!isMobile) {
                 renderer.shadowMap.type = THREE.BasicShadowMap;
             }
@@ -1637,15 +1646,17 @@
 
         // 窗口大小调整
         function onWindowResize() {
-            const newWidth = Math.floor(window.innerWidth / PIXEL_SIZE);
-            const newHeight = Math.floor(window.innerHeight / PIXEL_SIZE);
-            
+            const rect = document.getElementById('container').getBoundingClientRect();
+
+            const newWidth = Math.floor(rect.width / PIXEL_SIZE);
+            const newHeight = Math.floor(rect.height / PIXEL_SIZE);
+
             canvas.width = newWidth;
             canvas.height = newHeight;
-            canvas.style.width = window.innerWidth + 'px';
-            canvas.style.height = window.innerHeight + 'px';
-            
-            camera.aspect = window.innerWidth / window.innerHeight;
+            canvas.style.width = rect.width + 'px';
+            canvas.style.height = rect.height + 'px';
+
+            camera.aspect = rect.width / rect.height;
             camera.updateProjectionMatrix();
             renderer.setSize(newWidth, newHeight);
         }
@@ -1683,6 +1694,9 @@
                 const img = new Image();
                 img.onload = function() {
                     ctx.clearRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
+                    // 先铺一层天蓝色背景，避免透明区域变黑
+                    ctx.fillStyle = '#87CEEB';
+                    ctx.fillRect(0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
                     ctx.drawImage(img, 0, 0, CANVAS_WIDTH, CANVAS_HEIGHT);
                 };
                 img.src = imageData;
