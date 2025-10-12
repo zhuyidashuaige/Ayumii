@@ -2,7 +2,7 @@
 <html lang="zh">
   <head>
     <meta charset="UTF-8" />
-    <title>go fishing~🎣</title>
+    <title>钓鱼咯🎣</title>
     <style>
       html,
       body {
@@ -558,6 +558,10 @@
           this.addEventListener(a, b);
           return this;
         };
+        // 确保 .on 不参与 for..in 遍历，避免数组遍历出现非索引键
+        try {
+          Object.defineProperty(Object.prototype, 'on', { enumerable: false });
+        } catch (e) {}
         window.can = document.querySelector('canvas');
         window.ctx = window.can.getContext('2d');
         window.can.width = window.innerWidth;
@@ -650,6 +654,167 @@
           );
           ctx.fill();
         };
+        // —— 新增：鲨鱼绘制函数（更大的体型与鲨鱼外形） ——
+        var draw_shark = function (shark) {
+          ctx.save();
+          var s = shark.s;
+          // 修正游动朝向：将绘制方向取反，使形体朝运动方向
+          var dir = -shark.pos;
+          var sway = Math.sin(Date.now() * 0.003 + (shark.phase || 0));
+          // 渐变（上深下浅）更有层次感
+          var grad = ctx.createLinearGradient(shark.x, shark.y - s, shark.x, shark.y + s);
+          grad.addColorStop(0, '#3e5974');
+          grad.addColorStop(0.5, '#5f7f97');
+          grad.addColorStop(1, '#e9f4ff');
+          ctx.strokeStyle = 'rgba(40,50,60,0.8)';
+          ctx.lineWidth = Math.max(1.5, s / 12);
+
+          // 身体（流线型轮廓，用贝塞尔曲线更贴近鲨鱼）
+          ctx.beginPath();
+          ctx.moveTo(shark.x - s * 1.7 * dir, shark.y); // 鼻尖
+          ctx.quadraticCurveTo(
+            shark.x - s * 0.9 * dir,
+            shark.y - s * 0.8,
+            shark.x + s * 0.8 * dir,
+            shark.y - s * 0.25
+          );
+          ctx.quadraticCurveTo(
+            shark.x + s * 1.6 * dir,
+            shark.y - s * 0.15,
+            shark.x + s * 1.8 * dir,
+            shark.y
+          ); // 上侧到尾基
+          ctx.quadraticCurveTo(
+            shark.x + s * 1.6 * dir,
+            shark.y + s * 0.2,
+            shark.x + s * 0.8 * dir,
+            shark.y + s * 0.35
+          );
+          ctx.quadraticCurveTo(
+            shark.x - s * 0.8 * dir,
+            shark.y + s * 0.85,
+            shark.x - s * 1.7 * dir,
+            shark.y
+          ); // 下侧回到鼻尖
+          ctx.closePath();
+          ctx.fillStyle = grad;
+          ctx.fill();
+          ctx.stroke();
+
+          // 尾巴（带摆动）
+          ctx.beginPath();
+          var tailX = shark.x + s * 1.85 * dir;
+          var tailY = shark.y;
+          var tOff = sway * s * 0.25;
+          ctx.moveTo(tailX, tailY);
+          ctx.lineTo(tailX + (s * 0.8 + tOff) * dir, tailY - s * 0.55);
+          ctx.lineTo(tailX + (s * 0.8 - tOff) * dir, tailY + s * 0.55);
+          ctx.closePath();
+          ctx.fillStyle = grad;
+          ctx.fill();
+          ctx.stroke();
+
+          // 背鳍（柔和曲线）
+          ctx.beginPath();
+          ctx.moveTo(shark.x - s * 0.2 * dir, shark.y - s * 0.15);
+          ctx.quadraticCurveTo(
+            shark.x + s * 0.3 * dir,
+            shark.y - s * 1.2,
+            shark.x + s * 0.7 * dir,
+            shark.y - s * 0.15
+          );
+          ctx.closePath();
+          ctx.fillStyle = '#556e84';
+          ctx.fill();
+          ctx.stroke();
+
+          // 腹鳍（对称）
+          ctx.beginPath();
+          ctx.moveTo(shark.x + s * 0.2 * dir, shark.y + s * 0.1);
+          ctx.quadraticCurveTo(
+            shark.x + s * 0.6 * dir,
+            shark.y + s * 0.9,
+            shark.x + s * 0.9 * dir,
+            shark.y + s * 0.2
+          );
+          ctx.closePath();
+          ctx.fillStyle = '#5a738a';
+          ctx.fill();
+          ctx.stroke();
+
+          // 眼睛（高光）
+          ctx.beginPath();
+          ctx.fillStyle = '#0c1014';
+          ctx.arc(
+            shark.x - s * 1.1 * dir,
+            shark.y - s * 0.22,
+            Math.max(2, s / 12),
+            0,
+            Math.PI * 2
+          );
+          ctx.fill();
+          ctx.beginPath();
+          ctx.fillStyle = 'rgba(255,255,255,0.85)';
+          ctx.arc(
+            shark.x - s * 1.06 * dir,
+            shark.y - s * 0.26,
+            Math.max(1, s / 24),
+            0,
+            Math.PI * 2
+          );
+          ctx.fill();
+
+          // 鳃裂（几条短线增加真实感）
+          ctx.beginPath();
+          ctx.strokeStyle = 'rgba(40,50,60,0.6)';
+          ctx.lineWidth = Math.max(1, s / 24);
+          for (var i = 0; i < 3; i++) {
+            var gx = shark.x - s * 1.35 * dir + i * s * 0.12 * dir;
+            var gy = shark.y - s * 0.05 + i * s * 0.02;
+            ctx.moveTo(gx, gy);
+            ctx.lineTo(gx + s * 0.28 * dir, gy + s * 0.02);
+          }
+          ctx.stroke();
+
+          // 嘴部（轻微弧线，不夸张的牙齿）
+          ctx.beginPath();
+          ctx.strokeStyle = 'rgba(40,40,40,0.7)';
+          ctx.lineWidth = Math.max(1, s / 26);
+          ctx.moveTo(shark.x - s * 1.55 * dir, shark.y + s * 0.06);
+          ctx.quadraticCurveTo(
+            shark.x - s * 1.85 * dir,
+            shark.y + s * 0.14,
+            shark.x - s * 1.45 * dir,
+            shark.y + s * 0.18
+          );
+          ctx.stroke();
+          ctx.restore();
+        };
+        // —— 新增：美人鱼绘制（使用本地图片替代） ——
+        // 预加载本地图片 d:\trae项目\GRAM-main\美人鱼.png
+        var mermaidImg = new Image();
+        var mermaidImgLoaded = false;
+        mermaidImg.onload = function () { mermaidImgLoaded = true; };
+        mermaidImg.src = '美人鱼.png';
+        var draw_mermaid = function (m) {
+          if (!mermaidImgLoaded) return;
+          ctx.save();
+          var s = m.s;
+          var dir = m.pos; // 朝向改为与移动方向一致
+          var t = Date.now() * 0.004 + (m.phase || 0);
+          var sway = Math.sin(t) * 0.06; // 轻微摆动
+          // 以角色中心为基准绘制，并根据方向翻转
+          ctx.translate(m.x, m.y);
+          ctx.scale(dir, 1);
+          ctx.rotate(sway);
+          var iw = mermaidImg.naturalWidth || mermaidImg.width;
+          var ih = mermaidImg.naturalHeight || mermaidImg.height;
+          var aspect = (iw && ih) ? iw / ih : 1;
+          var h = s * 4; // 高度调为原来的两倍
+          var w = h * aspect;
+          ctx.drawImage(mermaidImg, -w / 2, -h / 2, w, h);
+          ctx.restore();
+        };
         var Fish = function () {
           var s = rand(10, 30);
           return {
@@ -665,8 +830,45 @@
             caughtBy: null,
           };
         };
+        // 新增：Shark 构造函数（更大体型与更缓慢移动）
+        var Shark = function () {
+          var s = rand(40, 80);
+          return {
+            x: rand(s * 3, can.width - s * 3),
+            y: rand(s, can.height - s),
+            s: s,
+            px: rand([-1, 1]) * randFloat(0.8, 1.6),
+            py: rand([-1, 1]) * randFloat(0.2, 0.6),
+            pos: rand([-1, 1]),
+            speed: 4,
+            caught: false,
+            caughtBy: null,
+            phase: randFloat(0, Math.PI * 2),
+          };
+        };
+        // 新增：Mermaid 构造函数（轻盈移动与摆动参数，可被钓起）
+        var Mermaid = function () {
+          var s = rand(28, 42);
+          return {
+            x: rand(s * 3, can.width - s * 3),
+            y: rand(s, can.height - s),
+            s: s,
+            px: rand([-1, 1]) * randFloat(0.6, 1.4),
+            py: rand([-1, 1]) * randFloat(0.2, 0.6),
+            pos: rand([-1, 1]),
+            phase: randFloat(0, Math.PI * 2),
+            caught: false,
+            caughtBy: null,
+          };
+        };
         var fish = [];
-        for (let i = 0; i < 20; i++) fish.push(new Fish());
+        for (let i = 0; i < 16; i++) fish.push(new Fish());
+        // 新增：少量鲨鱼
+        var sharks = [];
+        for (let i = 0; i < 3; i++) sharks.push(new Shark());
+        // 新增：美人鱼
+        var mermaids = [];
+        for (let i = 0; i < 4; i++) mermaids.push(new Mermaid());
         var Line = function (x) {
           return {
             x: x,
@@ -694,7 +896,56 @@
             10,
             30
           );
-          for (let i in fish) {
+          // 先绘制鲨鱼（更大体积）
+          for (let i = 0; i < sharks.length; i++) {
+            let p = sharks[i];
+            ctx.beginPath();
+            ctx.shadowBlur = 0;
+            ctx.strokeStyle = 'rgba(60,70,80,0.8)';
+            ctx.fillStyle = 'rgb(150,160,170)';
+            draw_shark(p);
+            if (p.caught) {
+              p.y = lines[p.caughtBy].y;
+              if (p.y + p.s < -p.s) {
+                sharks[i] = new Shark();
+                sharks[i].y = can.height + sharks[i].s;
+                lines[p.caughtBy].released = true;
+                fishCaught++;
+              }
+            } else {
+              p.x += p.px;
+              p.y += p.py;
+              p.pos = Math.sign(p.px);
+              if (p.x + p.s * 3.6 < 0) p.x = can.width + p.s * 3.6;
+              else if (p.x - p.s * 3.6 > can.width) p.x = -p.s * 3.6;
+              if (p.y + p.s < 0) p.y = can.height + p.s;
+              else if (p.y - p.s > can.height) p.y = -p.s;
+            }
+          }
+          // 绘制美人鱼（并处理被钩上后的上升与重生）
+          for (let i = 0; i < mermaids.length; i++) {
+            let p = mermaids[i];
+            draw_mermaid(p);
+            if (p.caught) {
+              p.y = lines[p.caughtBy].y;
+              if (p.y + p.s < -p.s) {
+                mermaids[i] = new Mermaid();
+                mermaids[i].y = can.height + mermaids[i].s;
+                lines[p.caughtBy].released = true;
+                fishCaught++;
+              }
+            } else {
+              p.x += p.px;
+              p.y += p.py;
+              p.pos = Math.sign(p.px);
+              if (p.x + p.s * 3.2 < 0) p.x = can.width + p.s * 3.2;
+              else if (p.x - p.s * 3.2 > can.width) p.x = -p.s * 3.2;
+              if (p.y + p.s < 0) p.y = can.height + p.s;
+              else if (p.y - p.s > can.height) p.y = -p.s;
+            }
+          }
+          // 再绘制小鱼
+          for (let i = 0; i < fish.length; i++) {
             let p = fish[i];
             ctx.beginPath();
             ctx.shadowBlur = 0;
@@ -720,7 +971,7 @@
             }
           }
           let n = 0;
-          for (let i in lines) {
+          for (let i = 0; i < lines.length; i++) {
             let p = lines[i];
             ctx.beginPath();
             ctx.lineWidth = 2;
@@ -738,7 +989,7 @@
             ctx.stroke();
             p.y += p.speed;
             var caught = false;
-            for (let x in fish) {
+            for (let x = 0; x < fish.length; x++) {
               if (
                 p.y > fish[x].y - fish[x].s &&
                 p.y < fish[x].y + fish[x].s &&
@@ -750,6 +1001,40 @@
                 fish[x].caught = caught = true;
                 fish[x].caughtBy = i;
                 break;
+              }
+            }
+            // 鲨鱼的捕获判定（更大的包围盒）
+            if (!caught) {
+              for (let x = 0; x < sharks.length; x++) {
+                if (
+                  p.y > sharks[x].y - sharks[x].s &&
+                  p.y < sharks[x].y + sharks[x].s &&
+                  p.x < sharks[x].x + sharks[x].s * 3.2 &&
+                  p.x > sharks[x].x - sharks[x].s * 3.2 &&
+                  Math.sign(p.speed) == 1 &&
+                  !sharks[x].caught
+                ) {
+                  sharks[x].caught = caught = true;
+                  sharks[x].caughtBy = i;
+                  break;
+                }
+              }
+            }
+            // 美人鱼的捕获判定（使用较宽的包围盒）
+            if (!caught) {
+              for (let x = 0; x < mermaids.length; x++) {
+                if (
+                  p.y > mermaids[x].y - mermaids[x].s &&
+                  p.y < mermaids[x].y + mermaids[x].s &&
+                  p.x < mermaids[x].x + mermaids[x].s * 2.6 &&
+                  p.x > mermaids[x].x - mermaids[x].s * 2.6 &&
+                  Math.sign(p.speed) == 1 &&
+                  !mermaids[x].caught
+                ) {
+                  mermaids[x].caught = caught = true;
+                  mermaids[x].caughtBy = i;
+                  break;
+                }
               }
             }
             if (caught) p.speed = -Math.abs(p.speed);
