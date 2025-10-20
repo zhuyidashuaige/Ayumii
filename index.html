@@ -394,9 +394,9 @@ Lakukan sedikit kemajuan setiap hari dan Anda akan menjadi pegawai negeri sipil.
         // 新增：目录搜索相关
         // 将原先的 const CATEGORIES = ['基础知识','课堂作业','课后作业']; 替换为中印对照表
         const CATEGORY_MAP = [
-            { zh: '基础知识',  id: 'Dasar-dasar' },
-            { zh: '课堂作业',  id: 'Pekerjaan Kelas' },
-            { zh: '课后作业',  id: 'Pekerjaan rumah' }
+            { zh: 'Dasar-dasar',  id: 'Dasar-dasar' },
+            { zh: 'Pekerjaan Kelas',  id: 'Pekerjaan Kelas' },
+            { zh: 'Pekerjaan rumah',  id: 'Pekerjaan rumah' }
         ];
         let searchIndex = [];
         let activeIdx = -1;
@@ -449,7 +449,7 @@ Lakukan sedikit kemajuan setiap hari dan Anda akan menjadi pegawai negeri sipil.
             const html = list.slice(0, 12).map((it, i) => {
                 return `
                     <div class="search-result-item" data-idx="${i}">
-                        <span class="badge">目录</span>
+                        <span class="badge">Daftar isi</span>
                         <div class="label">
                             <strong>${it.subject}</strong> — ${it.chinese} <span style="opacity:.7">› ${it.categoryId}</span>
                         </div>
@@ -558,7 +558,7 @@ Lakukan sedikit kemajuan setiap hari dan Anda akan menjadi pegawai negeri sipil.
             document.getElementById('backButton').classList.remove('hidden');
             
             // 更新页面标题
-            document.getElementById('pageTitle').textContent = `${subjectName} - 甜蜜学习之旅`;
+            document.getElementById('pageTitle').textContent = `${subjectName} - Perjalanan Belajar yang Manis`;
             document.getElementById('mainTitle').textContent = `📚 ${subjectName}`;
             document.getElementById('mainSubtitle').textContent = chineseName;
             
@@ -706,7 +706,7 @@ Lakukan sedikit kemajuan setiap hari dan Anda akan menjadi pegawai negeri sipil.
                     </div>
                     <div class="image-info">
                         <div class="image-title">${fileName}</div>
-                        <div class="image-size" id="size-${index}">加载中...</div>
+                        <div class="image-size" id="size-${index}">memuat...</div>
                     </div>
                 `;
                 
@@ -735,7 +735,7 @@ Lakukan sedikit kemajuan setiap hari dan Anda akan menjadi pegawai negeri sipil.
             document.body.removeChild(link);
             
             // 显示下载提示
-            showToast(`正在下载: ${fileName}`, 'success');
+            showToast(`Mengunduh: ${fileName}`, 'success');
         }
         
         // 图片模态框功能（增强版）
@@ -751,7 +751,7 @@ Lakukan sedikit kemajuan setiap hari dan Anda akan menjadi pegawai negeri sipil.
                             <div class="modal-title">${fileName}</div>
                             <div class="modal-actions">
                                 <button class="modal-button" onclick="downloadImage('${imagePath}', '${fileName}')">
-                                    📥 下载
+                                    📥 unduh
                                 </button>
                                 <button class="close-modal" onclick="closeImageModal()">&times;</button>
                             </div>
@@ -938,6 +938,7 @@ Lakukan sedikit kemajuan setiap hari dan Anda akan menjadi pegawai negeri sipil.
     </script>
 </body>
 </html>
+
 
 
 
